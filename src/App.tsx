@@ -12,8 +12,35 @@ import AddProduct from "./pages/AddProduct";
 import About from "./pages/About";
 import ContactUs from "./pages/ContactUs";
 import Login from "./pages/Login";
+import Auth from "./pages/Auth";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const queryClient = new QueryClient();
+
+function ProtectedRoute({ children }: { children: JSX.Element }) {
+  const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState<any>(null);
+
+  useEffect(() => {
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setLoading(false);
+    });
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+    return () => listener?.subscription.unsubscribe();
+  }, []);
+
+  if (loading) return <div className="flex justify-center items-center min-h-screen text-lg">Loading...</div>;
+  if (!session) {
+    window.location.replace("/auth");
+    return null;
+  }
+  return children;
+}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -26,10 +53,39 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/track-sales" element={<TrackSales />} />
-          <Route path="/sales-reports" element={<SalesReports />} />
-          <Route path="/add-product" element={<AddProduct />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/track-sales"
+            element={
+              <ProtectedRoute>
+                <TrackSales />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sales-reports"
+            element={
+              <ProtectedRoute>
+                <SalesReports />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-product"
+            element={
+              <ProtectedRoute>
+                <AddProduct />
+              </ProtectedRoute>
+            }
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,6 +1,6 @@
-
 import { Link, useLocation } from "react-router-dom";
 import { LogOut, ShoppingCart, BarChart2, Archive, Plus } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const navLinks = [
   { name: "Dashboard", to: "/dashboard", icon: BarChart2 },
@@ -11,6 +11,12 @@ const navLinks = [
 
 export default function TopNav({ onLogout }: { onLogout?: () => void }) {
   const location = useLocation();
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    if (onLogout) onLogout();
+    // Redirect handled by onAuthStateChange
+  };
+
   return (
     <nav className="w-full px-8 py-3 flex items-center justify-between
       bg-white/95 border-b border-slate-200 shadow-md z-30 glass-card light">
@@ -35,7 +41,7 @@ export default function TopNav({ onLogout }: { onLogout?: () => void }) {
         </div>
       </div>
       <button
-        onClick={onLogout}
+        onClick={handleLogout}
         className="flex items-center gap-2 px-3 py-2 rounded-md font-semibold bg-accent-btn shadow-md hover:scale-105 transition focus:ring-2 ring-accent"
         title="Log out"
       >
