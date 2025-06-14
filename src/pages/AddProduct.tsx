@@ -3,7 +3,12 @@ import TopNav from "@/components/TopNav";
 import { useState } from "react";
 
 export default function AddProduct() {
-  const [product, setProduct] = useState({ name: "", price: "", stock: "" });
+  const [product, setProduct] = useState({
+    name: "",
+    buyingPrice: "",
+    sellingPrice: "",
+    stock: "",
+  });
   const [added, setAdded] = useState(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -14,7 +19,12 @@ export default function AddProduct() {
     e.preventDefault();
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
-    setProduct({ name: "", price: "", stock: "" });
+    setProduct({
+      name: "",
+      buyingPrice: "",
+      sellingPrice: "",
+      stock: "",
+    });
   }
 
   return (
@@ -39,31 +49,48 @@ export default function AddProduct() {
           </div>
           <div className="flex gap-4">
             <div className="flex-1">
-              <label className="block text-gray-700 mb-2 font-medium">Price</label>
+              <label className="block text-gray-700 mb-2 font-medium">
+                Buying Price (per Qty)
+              </label>
               <input
-                name="price"
+                name="buyingPrice"
                 type="number"
                 min={0}
                 required
-                value={product.price}
+                value={product.buyingPrice}
                 onChange={handleChange}
                 className="w-full border rounded-md px-3 py-2 focus:ring-2 ring-primary"
-                placeholder="₹0"
+                placeholder="Buying Price"
               />
             </div>
             <div className="flex-1">
-              <label className="block text-gray-700 mb-2 font-medium">Stock Qty</label>
+              <label className="block text-gray-700 mb-2 font-medium">
+                Selling Price (per Qty)
+              </label>
               <input
-                name="stock"
+                name="sellingPrice"
                 type="number"
                 min={0}
                 required
-                value={product.stock}
+                value={product.sellingPrice}
                 onChange={handleChange}
                 className="w-full border rounded-md px-3 py-2 focus:ring-2 ring-primary"
-                placeholder="0"
+                placeholder="Selling Price"
               />
             </div>
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2 font-medium">Stock Qty</label>
+            <input
+              name="stock"
+              type="number"
+              min={0}
+              required
+              value={product.stock}
+              onChange={handleChange}
+              className="w-full border rounded-md px-3 py-2 focus:ring-2 ring-primary"
+              placeholder="0"
+            />
           </div>
           <button
             type="submit"
