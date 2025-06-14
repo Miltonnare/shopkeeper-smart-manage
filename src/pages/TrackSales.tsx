@@ -15,7 +15,7 @@ export default function TrackSales() {
       <TopNav />
       <main className="max-w-4xl mx-auto px-4 py-10">
         <h2 className="text-2xl font-bold mb-6">Track Sales</h2>
-        <div className="bg-white shadow rounded-xl border overflow-x-auto">
+        <div className="neu-card overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead>
               <tr>
@@ -41,4 +41,3 @@ export default function TrackSales() {
     </div>
   );
 }
-

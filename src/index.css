@@ -101,3 +101,37 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Neuromorphism styles */
+.neu-card {
+  background: var(--card, #f1f3f7);
+  border-radius: 1.2rem;
+  box-shadow:
+    8px 8px 24px #dde1e7,
+    -8px -8px 24px #fff;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+.neu-card:hover, .neu-active {
+  box-shadow:
+    4px 4px 18px #e2e6ec,
+    -4px -4px 18px #fff,
+    0 4px 16px #bfc8df3a;
+}
+
+.neu-btn {
+  background: linear-gradient(145deg,#f6fafd,#e9eef6);
+  border-radius: 1.2rem;
+  box-shadow: 4px 4px 14px #e5e6ec, -4px -4px 14px #fff;
+  transition: box-shadow 0.1s, background 0.1s;
+}
+.neu-btn:active, .neu-btn:focus {
+  box-shadow: inset 2px 2px 10px #cfd8e3, inset -2px -2px 8px #fff;
+  background: linear-gradient(135deg,#e9eef6,#f6fafd);
+}
+
+.neu-nav {
+  background: linear-gradient(120deg,#f1f3f7 80%,#e9eef6 100%);
+  box-shadow: 4px 4px 18px #dde1e4, -2px -2px 8px #fff;
+  border-radius: 1.2rem;
+}

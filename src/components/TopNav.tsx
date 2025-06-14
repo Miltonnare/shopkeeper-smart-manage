@@ -12,9 +12,9 @@ const navLinks = [
 export default function TopNav({ onLogout }: { onLogout?: () => void }) {
   const location = useLocation();
   return (
-    <nav className="w-full bg-white border-b border-gray-200 px-8 py-3 flex items-center justify-between shadow-sm z-20">
+    <nav className="w-full neu-nav px-8 py-3 flex items-center justify-between shadow-sm z-20">
       <div className="flex items-center gap-8">
-        <span className="text-2xl font-bold tracking-tight text-primary">SmartShop</span>
+        <span className="text-2xl font-bold tracking-tight text-primary drop-shadow">SmartShop</span>
         <div className="flex gap-4">
           {navLinks.map(link => (
             <Link
@@ -42,3 +42,4 @@ export default function TopNav({ onLogout }: { onLogout?: () => void }) {
     </nav>
   );
 }
+
