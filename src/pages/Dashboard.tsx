@@ -1,4 +1,3 @@
-
 import TopNav from "@/components/TopNav";
 import { useNavigate } from "react-router-dom";
 import { BarChart2, Archive, ShoppingCart, Plus as PlusIcon, Minus as MinusIcon } from "lucide-react";
@@ -14,20 +13,33 @@ export default function Dashboard() {
   const [totalSales, setTotalSales] = useState(initialTotalSales);
   const [lastSales, setLastSales] = useState(initialTotalSales);
 
-  // New: state to track auth user
+  // Auth and loading states
   const [user, setUser] = useState<any | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
   // States for inventory stats
   const [inventoryCount, setInventoryCount] = useState<number | null>(null);
   const [lowStockCount, setLowStockCount] = useState<number | null>(null);
 
   useEffect(() => {
+    let unsubscribed = false;
     // Get current user & subscribe to auth changes
-    supabase.auth.getUser().then(({ data: { user } }) => setUser(user));
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!unsubscribed) {
+        setUser(user);
+        setAuthLoading(false);
+      }
     });
-    return () => listener.subscription.unsubscribe();
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!unsubscribed) {
+        setUser(session?.user ?? null);
+        setAuthLoading(false);
+      }
+    });
+    return () => {
+      unsubscribed = true;
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
@@ -77,16 +89,24 @@ export default function Dashboard() {
       <TopNav onLogout={() => navigate("/")} />
       <main className="max-w-6xl mx-auto py-10 px-6 flex-1 w-full">
         <h2 className="text-3xl font-bold mb-8 bg-modern-gradient bg-clip-text text-transparent drop-shadow">Dashboard Overview</h2>
-        {/* If not logged in, show a banner prompting user to login/signup */}
-        {!user && (
-          <div className="mb-8 bg-yellow-100 text-yellow-900 p-4 rounded-lg border border-yellow-300 shadow flex flex-col md:flex-row md:items-center gap-4">
-            <span>Sign in to manage your shop, add products, and track your inventory and sales!</span>
-            <div className="flex gap-2">
-              <Link to="/auth" className="px-4 py-2 rounded bg-primary text-white font-semibold hover:bg-primary/90 transition">
-                Login / Sign Up
-              </Link>
-            </div>
+        {/* Show loading spinner while user/auth state is being determined */}
+        {authLoading ? (
+          <div className="mb-8 flex items-center justify-center py-8">
+            <span className="animate-spin rounded-full border-4 border-accent/20 border-t-accent mr-3 h-6 w-6 inline-block" />
+            <span className="text-accent text-lg font-medium">Loading...</span>
           </div>
+        ) : (
+          // If not logged in, show a banner prompting user to login/signup
+          !user && (
+            <div className="mb-8 bg-yellow-100 text-yellow-900 p-4 rounded-lg border border-yellow-300 shadow flex flex-col md:flex-row md:items-center gap-4">
+              <span>Sign in to manage your shop, add products, and track your inventory and sales!</span>
+              <div className="flex gap-2">
+                <Link to="/auth" className="px-4 py-2 rounded bg-primary text-white font-semibold hover:bg-primary/90 transition">
+                  Login / Sign Up
+                </Link>
+              </div>
+            </div>
+          )
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
           {/* Total Sales stat card - GLASS */}
