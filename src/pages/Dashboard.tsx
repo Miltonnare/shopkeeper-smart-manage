@@ -22,13 +22,17 @@ export default function Dashboard() {
     async function fetchProductStats() {
       // Get current user
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      if (!user) {
+        setInventoryCount(0);
+        setLowStockCount(0);
+        return;
+      }
       // Fetch all products for this user
       let { data: products, error } = await supabase
         .from("products")
         .select("id,stock")
         .eq("user_id", user.id);
-      if (error) {
+      if (error || !Array.isArray(products)) {
         setInventoryCount(0);
         setLowStockCount(0);
         return;
@@ -165,3 +169,4 @@ export default function Dashboard() {
     </div>
   );
 }
+

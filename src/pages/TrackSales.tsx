@@ -24,7 +24,7 @@ export default function TrackSales() {
       if (error) {
         setProducts([]);
       } else {
-        setProducts(data);
+        setProducts(data || []);
       }
       setLoading(false);
     }
@@ -65,7 +65,7 @@ export default function TrackSales() {
                     </td>
                   </tr>
                 )}
-                {products.map((product) => (
+                {products.map((product: any) => (
                   <tr key={product.id} className="hover:bg-accent/10 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap font-semibold text-dark-main">{product.name}</td>
                     <td className="px-6 py-4 text-dark-main">{product.stock}</td>
