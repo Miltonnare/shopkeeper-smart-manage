@@ -5,6 +5,9 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import DashboardStats from "@/components/dashboard/DashboardStats";
+import RecordSaleModal from "@/components/dashboard/RecordSaleModal";
+import DashboardQuickActions from "@/components/dashboard/DashboardQuickActions";
 
 const initialTotalSales = 42950; // Initial sales value
 
@@ -195,156 +198,29 @@ export default function Dashboard() {
           )
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
-          {/* Total Sales stat card */}
-          <div className="glass-card light p-6 flex items-center gap-4 border shadow-xl hover:scale-[1.025] transition-all">
-            <span className="bg-accent/10 border-2 border-accent rounded-xl p-3 inline-flex shadow-inner">
-              <BarChart2 size={30} className="text-accent" />
-            </span>
-            <div className="flex-1">
-              <div className="font-bold mb-1 text-dark-secondary">Total Sales</div>
-              <div className="text-2xl font-extrabold text-accent transition-all duration-200" key={totalSales}>
-                {loadingTotalSales ? "..." : `Ksh${totalSales.toLocaleString()}`}
-              </div>
-              {/* No percentage change shown as it's not meaningful for historical totals */}
-            </div>
-            <div className="flex flex-col gap-2">
-              <button
-                aria-label="Record a sale"
-                className="bg-accent-btn p-1 rounded hover:scale-110 transition"
-                onClick={handleIncrement}
-                type="button"
-                disabled={!user || loadingTotalSales || products.length === 0}
-              >
-                <PlusIcon size={20} />
-              </button>
-              <button
-                aria-label="Cannot decrement sales"
-                className="bg-accent-btn p-1 rounded hover:scale-110 transition"
-                onClick={handleDecrement}
-                type="button"
-                disabled
-              >
-                <MinusIcon size={20} />
-              </button>
-            </div>
-          </div>
-          {/* Inventory stat cards */}
-          <div
-            className="glass-card light p-6 flex items-center gap-4 border shadow-xl hover:scale-[1.025] transition-all"
-          >
-            <span className="bg-accent/10 rounded-xl p-3 inline-flex shadow-inner">
-              <Archive size={30} className="text-accent" />
-            </span>
-            <div>
-              <div className="font-bold mb-1 text-dark-secondary">Inventory Items</div>
-              <div className="text-2xl font-extrabold text-accent">
-                {user
-                  ? (inventoryCount === null ? "..." : inventoryCount)
-                  : "--"}
-              </div>
-            </div>
-          </div>
-          <div
-            className="glass-card light p-6 flex items-center gap-4 border shadow-xl hover:scale-[1.025] transition-all"
-          >
-            <span className="bg-accent/10 rounded-xl p-3 inline-flex shadow-inner">
-              <ShoppingCart size={30} className="text-accent" />
-            </span>
-            <div>
-              <div className="font-bold mb-1 text-dark-secondary">Products Low in Stock</div>
-              <div className="text-2xl font-extrabold text-accent">
-                {user
-                  ? (lowStockCount === null ? "..." : lowStockCount)
-                  : "--"}
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* Sale record modal */}
-        {showSaleForm && (
-          <form
-            onSubmit={handleRecordSale}
-            className="fixed z-40 left-0 top-0 w-full h-full flex items-center justify-center bg-black/30 backdrop-blur"
-            style={{ alignItems: "flex-start", paddingTop: "12vh" }}
-          >
-            <div className="bg-white rounded-2xl shadow-2xl p-8 w-96 border">
-              <div className="mb-4 font-bold text-accent text-lg">Record a Sale</div>
-              <div className="mb-3">
-                <label className="block mb-1 font-medium text-sm">Product</label>
-                <select
-                  className="w-full px-2 py-2 border rounded"
-                  value={selectedProductId}
-                  onChange={e => setSelectedProductId(e.target.value)}
-                  required
-                >
-                  <option value="" disabled>Select product</option>
-                  {products.map((p) =>
-                    <option key={p.id} value={p.id}>{p.name} (Stock: {p.stock})</option>
-                  )}
-                </select>
-              </div>
-              <div className="mb-6">
-                <label className="block mb-1 font-medium text-sm">Quantity</label>
-                <input
-                  className="w-full px-2 py-2 border rounded"
-                  type="number"
-                  min={1}
-                  max={selectedProductId ? (products.find((p) => p.id === selectedProductId)?.stock || 1) : 1}
-                  value={saleQty}
-                  onChange={e => setSaleQty(Number(e.target.value))}
-                  required
-                />
-              </div>
-              <div className="flex gap-2">
-                <button
-                  type="submit"
-                  className="flex-1 bg-primary text-white rounded py-2 font-semibold hover:bg-primary/90 transition"
-                  disabled={isRecordingSale}
-                >
-                  {isRecordingSale ? "Saving..." : "Record Sale"}
-                </button>
-                <button type="button" className="flex-1 bg-gray-200 rounded py-2 font-semibold" onClick={() => setShowSaleForm(false)}>Cancel</button>
-              </div>
-            </div>
-          </form>
-        )}
+        <DashboardStats
+          totalSales={totalSales}
+          loadingTotalSales={loadingTotalSales}
+          user={user}
+          inventoryCount={inventoryCount}
+          lowStockCount={lowStockCount}
+          onRecordSale={() => setShowSaleForm(true)}
+        />
+
+        <RecordSaleModal
+          show={showSaleForm}
+          products={products}
+          selectedProductId={selectedProductId}
+          saleQty={saleQty}
+          isRecordingSale={isRecordingSale}
+          onChangeProduct={setSelectedProductId}
+          onChangeQty={setSaleQty}
+          onSubmit={handleRecordSale}
+          onCancel={() => setShowSaleForm(false)}
+        />
+
         <div className="flex flex-col md:flex-row gap-8">
-          <div className="flex-1 glass-card light p-6 mb-6 md:mb-0 border shadow-lg">
-            <h3 className="text-lg font-semibold mb-3 text-accent">Quick Actions</h3>
-            <div className="flex gap-4 flex-wrap">
-              <button
-                className="flex items-center bg-accent-btn px-4 py-2 rounded-md font-medium hover:scale-105 transition gap-2"
-                onClick={() => {
-                  if (user) navigate("/add-product");
-                  else navigate("/auth");
-                }}
-                disabled={!user}
-              >
-                <PlusIcon size={18} /> <span>Add Product</span>
-              </button>
-              <button
-                className="flex items-center bg-accent-btn px-4 py-2 rounded-md font-medium hover:scale-105 transition gap-2"
-                onClick={() => {
-                  if (user) navigate("/track-sales");
-                  else navigate("/auth");
-                }}
-                disabled={!user}
-              >
-                <BarChart2 size={18} /> <span>Track Sales</span>
-              </button>
-               <button
-                className="flex items-center bg-accent-btn px-4 py-2 rounded-md font-medium hover:scale-105 transition gap-2"
-                onClick={() => {
-                  if (user) navigate("/sales-reports");
-                  else navigate("/auth");
-                }}
-                disabled={!user}
-              >
-                <BarChart2 size={18} /> <span>Sales Reports</span>
-              </button>
-            </div>
-          </div>
+          <DashboardQuickActions user={user} />
           <div className="flex-1 flex flex-col">
             <div className="glass-card light h-full rounded-2xl flex items-center justify-center border shadow-lg p-6">
               <span className="text-lg text-dark-secondary italic">
