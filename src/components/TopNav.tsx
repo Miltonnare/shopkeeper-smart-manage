@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { LogOut, ShoppingCart, BarChart2, Archive, Plus, User } from "lucide-react";
+import { LogOut, ShoppingCart, BarChart2, Archive, Plus, User, Navigation } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 // Add profile link to navLinks
@@ -10,6 +10,7 @@ const navLinks = [
   { name: "Sales Reports", to: "/sales-reports", icon: BarChart2 },
   { name: "Add Product", to: "/add-product", icon: Plus },
   { name: "Profile", to: "/profile", icon: User }, // NEW
+  { name: "User Roles", to: "/user-roles", icon: Navigation }, // NEW NAV LINK
 ];
 
 export default function TopNav({ onLogout }: { onLogout?: () => void }) {

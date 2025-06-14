@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import DashboardStats from "@/components/dashboard/DashboardStats";
 import RecordSaleModal from "@/components/dashboard/RecordSaleModal";
 import DashboardQuickActions from "@/components/dashboard/DashboardQuickActions";
+import { useUserRoles } from "@/hooks/useUserRoles";
 
 const initialTotalSales = 42950; // Initial sales value
 
@@ -172,12 +173,34 @@ export default function Dashboard() {
     // Stats will be refreshed due to isRecordingSale dependency
   };
 
+  const { roles = [], loading: loadingRoles } = useUserRoles();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#e3edf9] via-[#c7f6ed] to-[#fafbfe] flex flex-col">
       <TopNav onLogout={() => navigate("/")} />
 
       <main className="max-w-6xl mx-auto py-10 px-6 flex-1 w-full">
         <h2 className="text-3xl font-bold mb-8 bg-modern-gradient bg-clip-text text-transparent drop-shadow">Dashboard Overview</h2>
+        {/* Show current user roles */}
+        {!authLoading && user && (
+          <div className="mb-6 flex flex-wrap gap-2 items-center">
+            <span className="text-base font-medium text-slate-600">Your roles:</span>
+            {loadingRoles ? (
+              <span className="text-slate-400 italic">Loading...</span>
+            ) : roles.length === 0 ? (
+              <span className="text-slate-400 italic">No roles assigned.</span>
+            ) : (
+              roles.map((role) => (
+                <span
+                  key={role}
+                  className="px-2 py-1 bg-accent/10 text-accent border border-accent/30 rounded font-semibold text-xs"
+                >
+                  {role}
+                </span>
+              ))
+            )}
+          </div>
+        )}
         {/* Show loading spinner while user/auth state is being determined */}
         {authLoading ? (
           <div className="mb-8 flex items-center justify-center py-8">
