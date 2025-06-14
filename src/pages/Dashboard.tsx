@@ -49,31 +49,31 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-[#222a38] via-[#263346] to-[#2f415c] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-[#e3edf9] via-[#c7f6ed] to-[#fafbfe] flex flex-col">
       <TopNav onLogout={() => navigate("/")} />
       <main className="max-w-6xl mx-auto py-10 px-6 flex-1 w-full">
-        <h2 className="text-2xl font-bold mb-8 glass-title">Dashboard Overview</h2>
+        <h2 className="text-3xl font-bold mb-8 bg-modern-gradient bg-clip-text text-transparent drop-shadow">Dashboard Overview</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
           {/* Total Sales stat card - GLASS */}
           <div
-            className="glass-card gold p-6 flex items-center gap-4 border shadow-xl hover:scale-[1.025] transition-all"
+            className="glass-card light p-6 flex items-center gap-4 border shadow-xl hover:scale-[1.025] transition-all"
           >
-            <span className="bg-[#23314d] border-2 border-gold rounded-xl p-3 inline-flex shadow-inner">
-              <BarChart2 size={30} className="text-[#ffd700]" />
+            <span className="bg-accent/10 border-2 border-accent rounded-xl p-3 inline-flex shadow-inner">
+              <BarChart2 size={30} className="text-accent" />
             </span>
             <div className="flex-1">
-              <div className="glass-title text-[1rem] mb-1">Total Sales</div>
-              <div className="text-2xl font-extrabold gold-text transition-all duration-200" key={totalSales}>
+              <div className="font-bold mb-1 text-dark-secondary">Total Sales</div>
+              <div className="text-2xl font-extrabold text-accent transition-all duration-200" key={totalSales}>
                 Ksh{totalSales.toLocaleString()}
               </div>
-              <div className={`text-sm ${Number(percentChange) >= 0 ? "text-emerald-300" : "text-rose-300"}`}>
+              <div className={`text-sm ${Number(percentChange) >= 0 ? "text-emerald-500" : "text-rose-400"}`}>
                 {changeDisplay}
               </div>
             </div>
             <div className="flex flex-col gap-2">
               <button
                 aria-label="Increment sales"
-                className="neu-btn p-1 hover:scale-110 transition"
+                className="bg-accent-btn p-1 rounded hover:scale-110 transition"
                 onClick={handleIncrement}
                 type="button"
               >
@@ -81,7 +81,7 @@ export default function Dashboard() {
               </button>
               <button
                 aria-label="Decrement sales"
-                className="neu-btn p-1 hover:scale-110 transition"
+                className="bg-accent-btn p-1 rounded hover:scale-110 transition"
                 onClick={handleDecrement}
                 type="button"
               >
@@ -93,47 +93,48 @@ export default function Dashboard() {
           {statDataStatic.map(stat => (
             <div
               key={stat.title}
-              className="glass-card p-6 flex items-center gap-4 border shadow-xl hover:scale-[1.025] transition-all"
+              className="glass-card light p-6 flex items-center gap-4 border shadow-xl hover:scale-[1.025] transition-all"
             >
-              <span className={`${stat.color} rounded-xl p-3 inline-flex shadow-inner`}>
-                <stat.icon size={30} />
+              <span className="bg-accent/10 rounded-xl p-3 inline-flex shadow-inner">
+                <stat.icon size={30} className="text-accent" />
               </span>
               <div>
-                <div className="glass-title mb-1">{stat.title}</div>
-                <div className="text-2xl font-extrabold text-white">{stat.value}</div>
-                <div className={`text-sm ${stat.change.startsWith("+") ? "text-emerald-300" : "text-rose-300"}`}>{stat.change}</div>
+                <div className="font-bold mb-1 text-dark-secondary">{stat.title}</div>
+                <div className="text-2xl font-extrabold text-accent">{stat.value}</div>
+                <div className={`text-sm ${stat.change.startsWith("+") ? "text-emerald-500" : "text-rose-400"}`}>{stat.change}</div>
               </div>
             </div>
           ))}
         </div>
         <div className="flex flex-col md:flex-row gap-8">
-          <div className="flex-1 glass-card p-6 mb-6 md:mb-0 border-gold shadow-lg">
-            <h3 className="text-lg font-semibold mb-3 gold-text">Quick Actions</h3>
+          <div className="flex-1 glass-card light p-6 mb-6 md:mb-0 border shadow-lg">
+            <h3 className="text-lg font-semibold mb-3 text-accent">Quick Actions</h3>
             <div className="flex gap-4 flex-wrap">
               <button
-                className="flex items-center neu-btn px-4 py-2 rounded-md font-medium hover:scale-105 transition gap-2"
+                className="flex items-center bg-accent-btn px-4 py-2 rounded-md font-medium hover:scale-105 transition gap-2"
                 onClick={() => navigate("/add-product")}
               >
-                <PlusIcon size={18} /> <span className="gold-text">Add Product</span>
+                <PlusIcon size={18} /> <span>Add Product</span>
               </button>
               <button
-                className="flex items-center neu-btn px-4 py-2 rounded-md font-medium hover:scale-105 transition gap-2"
+                className="flex items-center bg-accent-btn px-4 py-2 rounded-md font-medium hover:scale-105 transition gap-2"
                 onClick={() => navigate("/track-sales")}
               >
-                <BarChart2 size={18} /> <span className="gold-text">Track Sales</span>
+                <BarChart2 size={18} /> <span>Track Sales</span>
               </button>
               <button
-                className="flex items-center neu-btn px-4 py-2 rounded-md font-medium hover:scale-105 transition gap-2"
+                className="flex items-center bg-accent-btn px-4 py-2 rounded-md font-medium hover:scale-105 transition gap-2"
                 onClick={() => navigate("/sales-reports")}
               >
-                <BarChart2 size={18} /> <span className="gold-text">Sales Reports</span>
+                <BarChart2 size={18} /> <span>Sales Reports</span>
               </button>
             </div>
           </div>
           <div className="flex-1 flex flex-col">
-            {/* Placeholder: Add illustration, tips, or recent activity */}
-            <div className="glass-card h-full rounded-2xl flex items-center justify-center border shadow-lg p-6">
-              <span className="text-lg text-white/70 italic glass-title">“Stay smart! Monitor sales, stock, and trends here.”</span>
+            <div className="glass-card light h-full rounded-2xl flex items-center justify-center border shadow-lg p-6">
+              <span className="text-lg text-dark-secondary italic">
+                “Stay smart! Monitor sales, stock, and trends here.”
+              </span>
             </div>
           </div>
         </div>

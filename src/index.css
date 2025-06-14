@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -58,6 +57,43 @@
   }
 
   .dark {
+    /* Dark mode colors */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.9%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+    --ring: 224.3 76.3% 48%;
+
+    --sidebar-background: 222.2 26.6% 3.5%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 210 40% 98%;
+    --sidebar-primary-foreground: 222.2 47.4% 11.2%;
+    --sidebar-accent: 216 34% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 216 34% 17%;
+    --sidebar-ring: 217.9 14.3% 31.2%;
     /* ... keep existing code (dark variable definitions) ... */
     --deep-blue-glass: 218 38% 18%/0.8;
     --glass-text: #f8fafc;
@@ -161,4 +197,81 @@
 ::-webkit-scrollbar-thumb {
   background: #465161;
   border-radius: 1em;
+}
+
+/* New Modern UI update colors */
+    --accent-blue: #2563eb;
+    --accent-cyan: #1de9b6;
+    --accent-teal: #14b8a6;
+    --accent-indigo: #6366f1;
+    --accent-bg: #f7fafc;   /* Very light gray for backgrounds */
+    --accent-card: #ffffff; /* White for cards/tables */
+    --accent-dark: #1e293b; /* Charcoal */
+    --accent-muted: #7c899a;
+
+    --text-main: #1a202c;    /* Near black for max readability */
+    --text-secondary: #334155;
+
+    --glass-light-bg: 208 44% 95%/0.80;  /* glassy white-blue */
+    --glass-blur-light: 26px;
+    --glass-border-light: 208 32% 85%/0.7;
+
+
+// New glass-card for light theme
+.glass-card.light {
+  background: hsla(var(--glass-light-bg));
+  border-radius: 1.1rem;
+  box-shadow: 0 10px 36px 0 rgb(0 48 100 / 4%);
+  backdrop-filter: blur(var(--glass-blur-light));
+  -webkit-backdrop-filter: blur(var(--glass-blur-light));
+  border: 1.4px solid hsla(var(--glass-border-light));
+  transition: box-shadow 0.25s, background 0.17s;
+}
+
+// Blue-gradient utility (e.g. for headers)
+.bg-modern-gradient {
+  background: linear-gradient(90deg, #3b82f6 0%, #14b8a6 100%);
+}
+
+// Table accent header
+.table-header-accent {
+  background: linear-gradient(90deg, #3b82f6 0%, #14b8a6 85%);
+  color: #fff !important;
+}
+
+// Accent colored text & button classes
+.text-accent {
+  color: var(--accent-blue);
+}
+.text-dark-main {
+  color: var(--text-main);
+}
+.text-dark-secondary {
+  color: var(--text-secondary);
+}
+.bg-accent {
+  background-color: var(--accent-blue);
+}
+.bg-accent-btn {
+  background: linear-gradient(90deg, #2563eb 60%, #14b8a6 100%);
+  color: #fff;
+}
+
+// Muted light bg utility for page backgrounds
+.bg-soft {
+  background: var(--accent-bg);
+}
+
+// For improved table styles (optional)
+.table-glass th, .table-glass td {
+  background: transparent !important;
+  color: var(--text-main) !important;
+  border-bottom: 1px solid #ebeff5;
+}
+.table-glass th {
+  font-weight: bold;
+  letter-spacing: 0.08em;
+}
+.table-glass tr:hover td {
+  background: #e0f2fe55 !important;
 }

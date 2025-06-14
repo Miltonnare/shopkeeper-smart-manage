@@ -11,27 +11,45 @@ const sales = [
 
 export default function TrackSales() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#19212f] via-[#232b40] to-[#243a4b]">
+    <div className="min-h-screen bg-gradient-to-br from-[#f0f8fe] via-[#e0f7fa] to-[#f2f6fb]">
       <TopNav />
       <main className="max-w-4xl mx-auto px-4 py-10">
-        <h2 className="text-2xl font-bold mb-6 glass-title">Track Sales</h2>
-        <div className="glass-card overflow-x-auto border shadow-xl">
-          <table className="min-w-full divide-y divide-blue-600 table-glass">
+        <h2 className="text-2xl font-bold mb-6 bg-modern-gradient bg-clip-text text-transparent drop-shadow">Track Sales</h2>
+        <div className="glass-card light overflow-x-auto border shadow-xl">
+          <table className="min-w-full divide-y divide-blue-200 table-glass">
             <thead>
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold gold-text uppercase tracking-wider">Product</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold gold-text uppercase">Qty</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold gold-text uppercase">Amount</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold gold-text uppercase">Time</th>
+                <th
+                  className="px-6 py-3 text-left text-xs font-extrabold table-header-accent uppercase tracking-wider"
+                  colSpan={1}
+                >
+                  Product
+                </th>
+                <th
+                  className="px-6 py-3 text-left text-xs font-extrabold table-header-accent uppercase"
+                  colSpan={1}
+                >
+                  Qty
+                </th>
+                <th
+                  className="px-6 py-3 text-left text-xs font-extrabold table-header-accent uppercase"
+                >
+                  Amount
+                </th>
+                <th
+                  className="px-6 py-3 text-left text-xs font-extrabold table-header-accent uppercase"
+                >
+                  Time
+                </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700">
+            <tbody>
               {sales.map((sale) => (
-                <tr key={sale.id} className="hover:bg-blue-700/20 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap font-semibold text-white">{sale.product}</td>
-                  <td className="px-6 py-4 text-white">{sale.qty}</td>
-                  <td className="px-6 py-4 text-white">{sale.amount}</td>
-                  <td className="px-6 py-4 text-white">{sale.time}</td>
+                <tr key={sale.id} className="hover:bg-accent/10 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap font-semibold text-dark-main">{sale.product}</td>
+                  <td className="px-6 py-4 text-dark-main">{sale.qty}</td>
+                  <td className="px-6 py-4 text-dark-main">{sale.amount}</td>
+                  <td className="px-6 py-4 text-dark-main">{sale.time}</td>
                 </tr>
               ))}
             </tbody>

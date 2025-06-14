@@ -1,3 +1,4 @@
+
 import { Link, useLocation } from "react-router-dom";
 import { LogOut, ShoppingCart, BarChart2, Archive, Plus } from "lucide-react";
 
@@ -11,9 +12,10 @@ const navLinks = [
 export default function TopNav({ onLogout }: { onLogout?: () => void }) {
   const location = useLocation();
   return (
-    <nav className="w-full glass-card gold px-8 py-3 flex items-center justify-between shadow-lg z-30 border border-gold/60 backdrop-blur-md">
+    <nav className="w-full px-8 py-3 flex items-center justify-between
+      bg-white/95 border-b border-slate-200 shadow-md z-30 glass-card light">
       <div className="flex items-center gap-8">
-        <span className="text-2xl font-extrabold tracking-tight glass-title gold-text drop-shadow" style={{ letterSpacing: '1.5px' }}>
+        <span className="text-2xl font-extrabold tracking-tight text-accent" style={{ letterSpacing: '1.5px' }}>
           SmartShop
         </span>
         <div className="flex gap-4">
@@ -21,10 +23,11 @@ export default function TopNav({ onLogout }: { onLogout?: () => void }) {
             <Link
               key={link.name}
               to={link.to}
-              className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors ${location.pathname.startsWith(link.to)
-                  ? "glass-card bg-opacity-70 gold-text"
-                  : "text-white/90 hover:text-gold"
-                }`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors ${
+                location.pathname.startsWith(link.to)
+                  ? "bg-accent/10 text-accent font-semibold"
+                  : "text-dark-secondary hover:bg-accent/5 hover:text-accent"
+              }`}
             >
               <link.icon size={18} /> {link.name}
             </Link>
@@ -33,7 +36,7 @@ export default function TopNav({ onLogout }: { onLogout?: () => void }) {
       </div>
       <button
         onClick={onLogout}
-        className="flex items-center gap-2 px-3 py-2 rounded-md font-semibold bg-gradient-to-r from-gold to-yellow-400 text-black shadow-lg hover:from-amber-400 hover:to-yellow-400 transition-colors ring-2 ring-gold/30"
+        className="flex items-center gap-2 px-3 py-2 rounded-md font-semibold bg-accent-btn shadow-md hover:scale-105 transition focus:ring-2 ring-accent"
         title="Log out"
       >
         <LogOut size={18} /> Logout
