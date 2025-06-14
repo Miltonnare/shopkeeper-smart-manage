@@ -6,7 +6,7 @@ import { ShoppingCart, BarChart2, Archive, Plus } from "lucide-react";
 const statData = [
   {
     title: "Total Sales",
-    value: "₹42,950",
+    value: "Ksh42,950",
     change: "+8.2%",
     icon: BarChart2,
     color: "bg-blue-100 text-blue-700"
