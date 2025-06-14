@@ -2,32 +2,42 @@
 import TopNav from "@/components/TopNav";
 import { useNavigate } from "react-router-dom";
 import { BarChart2, Archive, ShoppingCart, Plus as PlusIcon, Minus as MinusIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const initialTotalSales = 42950; // Initial sales value
-
-const statDataStatic = [
-  {
-    title: "Inventory Items",
-    value: "120",
-    change: "-2.4%",
-    icon: Archive,
-    color: "bg-emerald-100 text-emerald-700"
-  },
-  {
-    title: "Products Low in Stock",
-    value: "7",
-    change: "+1.1%",
-    icon: ShoppingCart,
-    color: "bg-orange-100 text-orange-700"
-  }
-];
 
 export default function Dashboard() {
   const navigate = useNavigate();
   // State for sales 
   const [totalSales, setTotalSales] = useState(initialTotalSales);
   const [lastSales, setLastSales] = useState(initialTotalSales);
+
+  // States for inventory stats
+  const [inventoryCount, setInventoryCount] = useState<number | null>(null);
+  const [lowStockCount, setLowStockCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    // Fetch user products for current user and update inventory stats
+    async function fetchProductStats() {
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      // Fetch all products for this user
+      let { data: products, error } = await supabase
+        .from("products")
+        .select("id,stock")
+        .eq("user_id", user.id);
+      if (error) {
+        setInventoryCount(0);
+        setLowStockCount(0);
+        return;
+      }
+      setInventoryCount(products.length);
+      setLowStockCount(products.filter((p) => typeof p.stock === "number" && p.stock <= 10).length);
+    }
+    fetchProductStats();
+  }, []);
 
   // Derive sales change
   const salesDiff = totalSales - lastSales;
@@ -89,22 +99,35 @@ export default function Dashboard() {
               </button>
             </div>
           </div>
-          {/* Render remaining static stat cards as GLASS */}
-          {statDataStatic.map(stat => (
-            <div
-              key={stat.title}
-              className="glass-card light p-6 flex items-center gap-4 border shadow-xl hover:scale-[1.025] transition-all"
-            >
-              <span className="bg-accent/10 rounded-xl p-3 inline-flex shadow-inner">
-                <stat.icon size={30} className="text-accent" />
-              </span>
-              <div>
-                <div className="font-bold mb-1 text-dark-secondary">{stat.title}</div>
-                <div className="text-2xl font-extrabold text-accent">{stat.value}</div>
-                <div className={`text-sm ${stat.change.startsWith("+") ? "text-emerald-500" : "text-rose-400"}`}>{stat.change}</div>
+          {/* Inventory stat cards */}
+          <div
+            className="glass-card light p-6 flex items-center gap-4 border shadow-xl hover:scale-[1.025] transition-all"
+          >
+            <span className="bg-accent/10 rounded-xl p-3 inline-flex shadow-inner">
+              <Archive size={30} className="text-accent" />
+            </span>
+            <div>
+              <div className="font-bold mb-1 text-dark-secondary">Inventory Items</div>
+              <div className="text-2xl font-extrabold text-accent">
+                {inventoryCount === null ? "..." : inventoryCount}
               </div>
+              {/* Empty change, not needed for dynamic */}
             </div>
-          ))}
+          </div>
+          <div
+            className="glass-card light p-6 flex items-center gap-4 border shadow-xl hover:scale-[1.025] transition-all"
+          >
+            <span className="bg-accent/10 rounded-xl p-3 inline-flex shadow-inner">
+              <ShoppingCart size={30} className="text-accent" />
+            </span>
+            <div>
+              <div className="font-bold mb-1 text-dark-secondary">Products Low in Stock</div>
+              <div className="text-2xl font-extrabold text-accent">
+                {lowStockCount === null ? "..." : lowStockCount}
+              </div>
+              {/* Empty change, not needed for dynamic */}
+            </div>
+          </div>
         </div>
         <div className="flex flex-col md:flex-row gap-8">
           <div className="flex-1 glass-card light p-6 mb-6 md:mb-0 border shadow-lg">

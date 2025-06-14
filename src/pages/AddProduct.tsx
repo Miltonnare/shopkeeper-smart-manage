@@ -1,6 +1,8 @@
 
 import TopNav from "@/components/TopNav";
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AddProduct() {
   const [product, setProduct] = useState({
@@ -9,16 +11,50 @@ export default function AddProduct() {
     sellingPrice: "",
     stock: "",
   });
-  const [added, setAdded] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setProduct({ ...product, [e.target.name]: e.target.value });
   }
 
-  function handleAdd(e: React.FormEvent) {
+  async function handleAdd(e: React.FormEvent) {
     e.preventDefault();
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
+    setLoading(true);
+    // Get current user
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast({
+        title: "Not logged in",
+        description: "You need to be logged in to add a product.",
+        variant: "destructive",
+      });
+      setLoading(false);
+      return;
+    }
+    const { error } = await supabase.from("products").insert([
+      {
+        user_id: user.id,
+        name: product.name,
+        buying_price: Number(product.buyingPrice),
+        selling_price: Number(product.sellingPrice),
+        stock: Number(product.stock),
+      }
+    ]);
+    setLoading(false);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive"
+      });
+      return;
+    }
+    toast({
+      title: "Product added ✓",
+      variant: "default",
+    });
     setProduct({
       name: "",
       buyingPrice: "",
@@ -94,15 +130,11 @@ export default function AddProduct() {
           </div>
           <button
             type="submit"
+            disabled={loading}
             className="w-full bg-primary text-primary-foreground font-semibold py-2 rounded-md hover:bg-blue-700 mt-2 transition-colors"
           >
-            Add Product
+            {loading ? "Adding..." : "Add Product"}
           </button>
-          {added && (
-            <div className="text-green-600 mt-2 text-center animate-fade-in font-semibold">
-              Product added ✓
-            </div>
-          )}
         </form>
       </main>
     </div>
