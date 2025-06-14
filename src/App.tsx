@@ -13,6 +13,7 @@ import About from "./pages/About";
 import ContactUs from "./pages/ContactUs";
 import Login from "./pages/Login";
 import Auth from "./pages/Auth";
+import Profile from "./pages/Profile";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -78,6 +79,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <AddProduct />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             }
           />
