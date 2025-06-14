@@ -2,23 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+/* --- Color Palette & Glassmorphism Redefinition --- */
 
 @layer base {
   :root {
-    /* Improved palette */
-    --deep-blue-glass: 218 38% 18%/0.45;
-    --glass-blur: 22px;
-    --gold: 44 90% 52%;
-    --gold-gradient: linear-gradient(90deg, #ffe47a 0%, #f9d239 100%);
-    --warm-gold: #ffae42;
-    --glass-text: #f7fafc;
-    --light-grey: #f5f7fa;
-    --dark-grey: #20232c;
-    --glass-border: 220 16% 68%/0.5;
-    /* Existing vars ... */
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Main Palette */
+    --background: 220 44% 99%;
+    --foreground: 222.2 84% 6.9%;
+
+    --primary: 217 91% 60%;      /* Vibrant blue */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 187 48% 64%;    /* Cyan/teal */
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 36% 86%;
+    --input: 217 36% 91.4%;
+    --ring: 217 91% 60%;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -26,36 +32,27 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --accent: 217 91% 60%;           /* Same as primary for simplicity */
+    --accent-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --radius: 0.7rem;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Glass Variables */
+    --glass-blue: 217 96% 95%/0.75;
+    --glass-blur: 20px;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Text/utility */
+    --text-main: #1e293b;
+    --text-secondary: #334155;
+    --accent-blue: #2563eb;
+    --accent-teal: #14b8a6;
+    --accent-cyan: #22d3ee;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --accent-bg: #f7fafc;
+    --accent-card: #ffffff;
+    --accent-dark: #1e293b;
+    --accent-muted: #7c899a;
   }
-
   .dark {
     /* Dark mode colors */
     --background: 222.2 84% 4.9%;
@@ -103,23 +100,89 @@
     --warm-gold: #edc065;
     --glass-border: 220 16% 60%/0.28;
   }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-gradient-to-tr from-[#253053] via-[#2c3242] to-[#464a60] text-[#222] dark:text-[#fafafa];
-    background-attachment: fixed;
-    color: var(--dark-grey);
-    font-smoothing: antialiased;
+    @apply bg-gradient-to-tr from-[#e6f1fc] via-[#f5fdff] to-[#e2fcf5] text-[#1e293b] dark:text-[#fafafa];
     font-family: 'Inter', system-ui, 'Segoe UI', Arial, sans-serif;
   }
 }
 
-/* Neuromorphism styles */
+/* ========== CARD, GLASS, AND TABLE STYLES ========== */
+
+.glass-card {
+  background: hsla(var(--glass-blue));
+  border-radius: 1.1rem;
+  box-shadow: 0 10px 36px 0 rgb(0 48 100 / 7%);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1.5px solid var(--border);
+  transition: box-shadow 0.22s, background 0.14s;
+}
+.glass-card.light {
+  background: #fff;
+  border: 1.5px solid var(--border);
+}
+.glass-card .glass-title, .glass-title {
+  color: #1e293b;
+  text-shadow: 0 2px 16px #e0edfc40;
+}
+.bg-modern-gradient {
+  background: linear-gradient(90deg, #2563eb 0%, #14b8a6 100%);
+}
+.gold-text {
+  background: linear-gradient(92deg, #ffd700 0%, #ffe47a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.text-accent {
+  color: var(--accent-blue);
+}
+.text-dark-main {
+  color: var(--text-main);
+}
+.text-dark-secondary {
+  color: var(--text-secondary);
+}
+.bg-accent {
+  background-color: var(--accent-blue);
+}
+.bg-accent-btn {
+  background: linear-gradient(91deg, #2563eb 70%, #14b8a6 100%);
+  color: #fff;
+}
+
+/* Table Styles */
+.table-glass th, .table-glass td {
+  background: transparent !important;
+  color: var(--text-main) !important;
+  border-bottom: 1px solid #e2e8f0;
+}
+.table-glass th {
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  background: linear-gradient(90deg, #2563eb 0%, #14b8a6 100%) !important;
+  color: #fff !important;
+}
+.table-glass tr:hover td {
+  background: #e3f0fa80 !important;
+}
+
+/* Muted & Accent backgrounds */
+.bg-soft {
+  background: var(--accent-bg);
+}
+
+.table-header-accent {
+  background: linear-gradient(90deg, #2563eb 0%, #14b8a6 100%);
+  color: #fff !important;
+}
+
+/* ================= UTILS ================ */
+
+/* Button transitions, highlight, etc (unchanged) */
 .neu-card {
   background: var(--card, #f1f3f7);
   border-radius: 1.2rem;
@@ -274,4 +337,14 @@
 }
 .table-glass tr:hover td {
   background: #e0f2fe55 !important;
+}
+
+/* Animations, scrollbar, etc */
+::-webkit-scrollbar {
+  width: 10px;
+  background: #232b3b;
+}
+::-webkit-scrollbar-thumb {
+  background: #465161;
+  border-radius: 1em;
 }
