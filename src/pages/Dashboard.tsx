@@ -1,3 +1,4 @@
+
 import TopNav from "@/components/TopNav";
 import { useNavigate } from "react-router-dom";
 import { BarChart2, Archive, ShoppingCart, Plus as PlusIcon, Minus as MinusIcon } from "lucide-react";
@@ -48,24 +49,24 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-tr from-[#222a38] via-[#263346] to-[#2f415c] flex flex-col">
       <TopNav onLogout={() => navigate("/")} />
-      <main className="max-w-6xl mx-auto py-10 px-6">
-        <h2 className="text-2xl font-bold mb-8">Dashboard Overview</h2>
+      <main className="max-w-6xl mx-auto py-10 px-6 flex-1 w-full">
+        <h2 className="text-2xl font-bold mb-8 glass-title">Dashboard Overview</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
-          {/* Total Sales stat card - now with neuromorphism */}
+          {/* Total Sales stat card - GLASS */}
           <div
-            className="neu-card p-6 flex items-center gap-4 border hover:shadow-lg transition-shadow"
+            className="glass-card gold p-6 flex items-center gap-4 border shadow-xl hover:scale-[1.025] transition-all"
           >
-            <span className="bg-blue-100 text-blue-700 rounded-md p-3 inline-flex shadow-inner">
-              <BarChart2 size={30} />
+            <span className="bg-[#23314d] border-2 border-gold rounded-xl p-3 inline-flex shadow-inner">
+              <BarChart2 size={30} className="text-[#ffd700]" />
             </span>
             <div className="flex-1">
-              <div className="text-gray-600 font-medium">Total Sales</div>
-              <div className="text-2xl font-bold transition-all duration-200" key={totalSales}>
+              <div className="glass-title text-[1rem] mb-1">Total Sales</div>
+              <div className="text-2xl font-extrabold gold-text transition-all duration-200" key={totalSales}>
                 Ksh{totalSales.toLocaleString()}
               </div>
-              <div className={`text-sm ${Number(percentChange) >= 0 ? "text-green-600" : "text-red-500"}`}>
+              <div className={`text-sm ${Number(percentChange) >= 0 ? "text-emerald-300" : "text-rose-300"}`}>
                 {changeDisplay}
               </div>
             </div>
@@ -88,51 +89,51 @@ export default function Dashboard() {
               </button>
             </div>
           </div>
-          {/* Render remaining static stat cards */}
+          {/* Render remaining static stat cards as GLASS */}
           {statDataStatic.map(stat => (
             <div
               key={stat.title}
-              className="neu-card p-6 flex items-center gap-4 border hover:shadow-lg transition-shadow"
+              className="glass-card p-6 flex items-center gap-4 border shadow-xl hover:scale-[1.025] transition-all"
             >
-              <span className={`${stat.color} rounded-md p-3 inline-flex shadow-inner`}>
+              <span className={`${stat.color} rounded-xl p-3 inline-flex shadow-inner`}>
                 <stat.icon size={30} />
               </span>
               <div>
-                <div className="text-gray-600 font-medium">{stat.title}</div>
-                <div className="text-2xl font-bold">{stat.value}</div>
-                <div className={`text-sm ${stat.change.startsWith("+") ? "text-green-600" : "text-red-500"}`}>{stat.change}</div>
+                <div className="glass-title mb-1">{stat.title}</div>
+                <div className="text-2xl font-extrabold text-white">{stat.value}</div>
+                <div className={`text-sm ${stat.change.startsWith("+") ? "text-emerald-300" : "text-rose-300"}`}>{stat.change}</div>
               </div>
             </div>
           ))}
         </div>
         <div className="flex flex-col md:flex-row gap-8">
-          <div className="flex-1 neu-card p-6 mb-6 md:mb-0">
-            <h3 className="text-lg font-semibold mb-3">Quick Actions</h3>
+          <div className="flex-1 glass-card p-6 mb-6 md:mb-0 border-gold shadow-lg">
+            <h3 className="text-lg font-semibold mb-3 gold-text">Quick Actions</h3>
             <div className="flex gap-4 flex-wrap">
               <button
                 className="flex items-center neu-btn px-4 py-2 rounded-md font-medium hover:scale-105 transition gap-2"
                 onClick={() => navigate("/add-product")}
               >
-                <PlusIcon size={18} /> Add Product
+                <PlusIcon size={18} /> <span className="gold-text">Add Product</span>
               </button>
               <button
-                className="flex items-center neu-btn px-4 py-2 rounded-md font-medium bg-white hover:scale-105 transition gap-2"
+                className="flex items-center neu-btn px-4 py-2 rounded-md font-medium hover:scale-105 transition gap-2"
                 onClick={() => navigate("/track-sales")}
               >
-                <BarChart2 size={18} /> Track Sales
+                <BarChart2 size={18} /> <span className="gold-text">Track Sales</span>
               </button>
               <button
-                className="flex items-center neu-btn px-4 py-2 rounded-md font-medium bg-white hover:scale-105 transition gap-2"
+                className="flex items-center neu-btn px-4 py-2 rounded-md font-medium hover:scale-105 transition gap-2"
                 onClick={() => navigate("/sales-reports")}
               >
-                <BarChart2 size={18} /> Sales Reports
+                <BarChart2 size={18} /> <span className="gold-text">Sales Reports</span>
               </button>
             </div>
           </div>
           <div className="flex-1 flex flex-col">
             {/* Placeholder: Add illustration, tips, or recent activity */}
-            <div className="neu-card h-full rounded-2xl flex items-center justify-center border shadow-inner p-6">
-              <span className="text-lg text-gray-500 italic">“Stay smart! Monitor sales, stock, and trends here.”</span>
+            <div className="glass-card h-full rounded-2xl flex items-center justify-center border shadow-lg p-6">
+              <span className="text-lg text-white/70 italic glass-title">“Stay smart! Monitor sales, stock, and trends here.”</span>
             </div>
           </div>
         </div>

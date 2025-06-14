@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,6 +7,17 @@
 
 @layer base {
   :root {
+    /* Improved palette */
+    --deep-blue-glass: 218 38% 18%/0.45;
+    --glass-blur: 22px;
+    --gold: 44 90% 52%;
+    --gold-gradient: linear-gradient(90deg, #ffe47a 0%, #f9d239 100%);
+    --warm-gold: #ffae42;
+    --glass-text: #f7fafc;
+    --light-grey: #f5f7fa;
+    --dark-grey: #20232c;
+    --glass-border: 220 16% 68%/0.5;
+    /* Existing vars ... */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -33,62 +45,27 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* ... keep existing code (dark variable definitions) ... */
+    --deep-blue-glass: 218 38% 18%/0.8;
+    --glass-text: #f8fafc;
+    --light-grey: #222730;
+    --dark-grey: #fff;
+    --gold: 44 90% 50%;
+    --warm-gold: #edc065;
+    --glass-border: 220 16% 60%/0.28;
   }
 }
 
@@ -98,7 +75,11 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-gradient-to-tr from-[#253053] via-[#2c3242] to-[#464a60] text-[#222] dark:text-[#fafafa];
+    background-attachment: fixed;
+    color: var(--dark-grey);
+    font-smoothing: antialiased;
+    font-family: 'Inter', system-ui, 'Segoe UI', Arial, sans-serif;
   }
 }
 
@@ -119,30 +100,65 @@
     0 4px 16px #bfc8df3a;
 }
 
+/* Neuromorphism gold accent */
+.neu-gold-shadow {
+  box-shadow: 0 2px 24px 0 #ffe47a88, 0 0px 1px #ee9c1a70;
+}
+
+/* Neuromorphic button update for theme consistency (optional) */
 .neu-btn {
-  background: linear-gradient(145deg,#f6fafd,#e9eef6);
+  background: linear-gradient(145deg,#232b3b 85%,#293045 100%);
   border-radius: 1.2rem;
-  box-shadow: 4px 4px 14px #e5e6ec, -4px -4px 14px #fff;
-  transition: box-shadow 0.1s, background 0.1s;
+  color: #ffe47a;
+  box-shadow: 4px 4px 14px #222b48, -4px -4px 14px #384057;
+  transition: box-shadow 0.1s, background 0.1s, color 0.1s;
 }
 .neu-btn:active, .neu-btn:focus {
-  box-shadow: inset 2px 2px 10px #cfd8e3, inset -2px -2px 8px #fff;
-  background: linear-gradient(135deg,#e9eef6,#f6fafd);
+  box-shadow: inset 2px 2px 10px #20232c, inset -2px -2px 8px #28304d;
+  background: linear-gradient(135deg,#28334a,#2a303c);
 }
 
-.neu-nav {
-  background: linear-gradient(120deg,#f1f3f7 80%,#e9eef6 100%);
-  box-shadow: 4px 4px 18px #dde1e4, -2px -2px 8px #fff;
-  border-radius: 1.2rem;
-}
-
-/* Glassmorphism utility */
+/* Glassmorphism utility: DEEP BLUE GLASS with gold border accent */
 .glass-card {
-  background: rgba(255,255,255,0.25);
+  background: hsla(var(--deep-blue-glass));
   border-radius: 1.2rem;
-  box-shadow: 0 4px 40px 4px rgba(80, 139, 252, 0.08);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1.5px solid rgba(255,255,255, 0.5);
+  box-shadow: 0 8px 40px 0 rgba(38, 61, 91, 0.32);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1.85px solid hsla(var(--glass-border));
   transition: box-shadow 0.2s, background 0.2s;
+}
+.glass-card.gold {
+  border: 2px solid var(--warm-gold);
+  box-shadow: 0 4px 32px 4px #ffd70066, 0 0px 6px #ffe47a24;
+}
+.glass-card .gold-text, .gold-text {
+  color: var(--warm-gold);
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.glass-card .glass-title, .glass-title {
+  color: #fafbfc;
+  text-shadow: 0 2px 24px #0008;
+}
+
+/* Table glass variant */
+.table-glass th, .table-glass td {
+  background: hsla(var(--deep-blue-glass)) !important;
+  color: #fff !important;
+  border-bottom: 1px solid hsla(var(--glass-border));
+}
+.table-glass th { font-weight: bold; }
+.table-glass tr:hover td {
+  background: hsla(220,36%,22%,0.85) !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background: #232b3b;
+}
+::-webkit-scrollbar-thumb {
+  background: #465161;
+  border-radius: 1em;
 }

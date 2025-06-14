@@ -1,4 +1,3 @@
-
 import { Link, useLocation } from "react-router-dom";
 import { LogOut, ShoppingCart, BarChart2, Archive, Plus } from "lucide-react";
 
@@ -12,19 +11,19 @@ const navLinks = [
 export default function TopNav({ onLogout }: { onLogout?: () => void }) {
   const location = useLocation();
   return (
-    <nav className="w-full neu-nav px-8 py-3 flex items-center justify-between shadow-sm z-20">
+    <nav className="w-full glass-card gold px-8 py-3 flex items-center justify-between shadow-lg z-30 border border-gold/60 backdrop-blur-md">
       <div className="flex items-center gap-8">
-        <span className="text-2xl font-bold tracking-tight text-primary drop-shadow">SmartShop</span>
+        <span className="text-2xl font-extrabold tracking-tight glass-title gold-text drop-shadow" style={{ letterSpacing: '1.5px' }}>
+          SmartShop
+        </span>
         <div className="flex gap-4">
           {navLinks.map(link => (
             <Link
               key={link.name}
               to={link.to}
-              className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors
-                ${
-                  location.pathname.startsWith(link.to)
-                    ? "bg-primary text-primary-foreground"
-                    : "text-gray-700 hover:bg-gray-100"
+              className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors ${location.pathname.startsWith(link.to)
+                  ? "glass-card bg-opacity-70 gold-text"
+                  : "text-white/90 hover:text-gold"
                 }`}
             >
               <link.icon size={18} /> {link.name}
@@ -34,7 +33,7 @@ export default function TopNav({ onLogout }: { onLogout?: () => void }) {
       </div>
       <button
         onClick={onLogout}
-        className="flex items-center gap-2 px-3 py-2 rounded-md text-destructive-foreground font-semibold bg-destructive hover:bg-red-600 transition-colors"
+        className="flex items-center gap-2 px-3 py-2 rounded-md font-semibold bg-gradient-to-r from-gold to-yellow-400 text-black shadow-lg hover:from-amber-400 hover:to-yellow-400 transition-colors ring-2 ring-gold/30"
         title="Log out"
       >
         <LogOut size={18} /> Logout
@@ -42,4 +41,3 @@ export default function TopNav({ onLogout }: { onLogout?: () => void }) {
     </nav>
   );
 }
-

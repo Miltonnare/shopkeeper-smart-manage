@@ -11,27 +11,27 @@ const sales = [
 
 export default function TrackSales() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#19212f] via-[#232b40] to-[#243a4b]">
       <TopNav />
       <main className="max-w-4xl mx-auto px-4 py-10">
-        <h2 className="text-2xl font-bold mb-6">Track Sales</h2>
-        <div className="neu-card overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+        <h2 className="text-2xl font-bold mb-6 glass-title">Track Sales</h2>
+        <div className="glass-card overflow-x-auto border shadow-xl">
+          <table className="min-w-full divide-y divide-blue-600 table-glass">
             <thead>
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Product</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Qty</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Amount</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Time</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold gold-text uppercase tracking-wider">Product</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold gold-text uppercase">Qty</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold gold-text uppercase">Amount</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold gold-text uppercase">Time</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-slate-700">
               {sales.map((sale) => (
-                <tr key={sale.id} className="hover:bg-blue-50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap font-medium">{sale.product}</td>
-                  <td className="px-6 py-4">{sale.qty}</td>
-                  <td className="px-6 py-4">{sale.amount}</td>
-                  <td className="px-6 py-4">{sale.time}</td>
+                <tr key={sale.id} className="hover:bg-blue-700/20 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap font-semibold text-white">{sale.product}</td>
+                  <td className="px-6 py-4 text-white">{sale.qty}</td>
+                  <td className="px-6 py-4 text-white">{sale.amount}</td>
+                  <td className="px-6 py-4 text-white">{sale.time}</td>
                 </tr>
               ))}
             </tbody>
