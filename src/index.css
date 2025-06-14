@@ -135,3 +135,14 @@
   box-shadow: 4px 4px 18px #dde1e4, -2px -2px 8px #fff;
   border-radius: 1.2rem;
 }
+
+/* Glassmorphism utility */
+.glass-card {
+  background: rgba(255,255,255,0.25);
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 40px 4px rgba(80, 139, 252, 0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid rgba(255,255,255, 0.5);
+  transition: box-shadow 0.2s, background 0.2s;
+}
