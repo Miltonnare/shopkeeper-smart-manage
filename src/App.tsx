@@ -54,14 +54,9 @@ const App = () => (
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/auth" element={<Auth />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
+          {/* Dashboard is now PUBLIC */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          {/* Protected routes */}
           <Route
             path="/track-sales"
             element={
