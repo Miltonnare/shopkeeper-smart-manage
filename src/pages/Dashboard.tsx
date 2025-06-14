@@ -1,16 +1,11 @@
-
 import TopNav from "@/components/TopNav";
 import { useNavigate } from "react-router-dom";
-import { ShoppingCart, BarChart2, Archive, Plus } from "lucide-react";
+import { BarChart2, Archive, ShoppingCart, Plus as PlusIcon, Minus as MinusIcon } from "lucide-react";
+import { useState } from "react";
 
-const statData = [
-  {
-    title: "Total Sales",
-    value: "Ksh42,950",
-    change: "+8.2%",
-    icon: BarChart2,
-    color: "bg-blue-100 text-blue-700"
-  },
+const initialTotalSales = 42950; // Initial sales value
+
+const statDataStatic = [
   {
     title: "Inventory Items",
     value: "120",
@@ -29,13 +24,72 @@ const statData = [
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  // State for sales 
+  const [totalSales, setTotalSales] = useState(initialTotalSales);
+  const [lastSales, setLastSales] = useState(initialTotalSales);
+
+  // Derive sales change
+  const salesDiff = totalSales - lastSales;
+  // Calculate the percentage change (to one decimal)
+  const percentChange = lastSales !== 0 ? ((salesDiff / lastSales) * 100).toFixed(1) : "0.0";
+  const changeDisplay =
+    salesDiff === 0
+      ? "+0.0%"
+      : `${salesDiff > 0 ? "+" : ""}${percentChange}%`;
+
+  const handleIncrement = () => {
+    setLastSales(totalSales);
+    setTotalSales(totalSales + 100); // Change step as desired
+  };
+
+  const handleDecrement = () => {
+    setLastSales(totalSales);
+    setTotalSales(Math.max(totalSales - 100, 0));
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <TopNav onLogout={() => navigate("/")} />
       <main className="max-w-6xl mx-auto py-10 px-6">
         <h2 className="text-2xl font-bold mb-8">Dashboard Overview</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
-          {statData.map(stat => (
+          {/* Total Sales stat card - now interactive */}
+          <div
+            className="bg-white rounded-xl shadow p-6 flex items-center gap-4 border hover:shadow-lg transition-shadow"
+          >
+            <span className="bg-blue-100 text-blue-700 rounded-md p-3 inline-flex">
+              <BarChart2 size={30} />
+            </span>
+            <div className="flex-1">
+              <div className="text-gray-600 font-medium">Total Sales</div>
+              <div className="text-2xl font-bold transition-all duration-200" key={totalSales}>
+                Ksh{totalSales.toLocaleString()}
+              </div>
+              <div className={`text-sm ${Number(percentChange) >= 0 ? "text-green-600" : "text-red-500"}`}>
+                {changeDisplay}
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <button
+                aria-label="Increment sales"
+                className="bg-primary text-primary-foreground rounded-full p-1 hover:scale-110 transition"
+                onClick={handleIncrement}
+                type="button"
+              >
+                <PlusIcon size={20} />
+              </button>
+              <button
+                aria-label="Decrement sales"
+                className="bg-destructive text-destructive-foreground rounded-full p-1 hover:scale-110 transition"
+                onClick={handleDecrement}
+                type="button"
+              >
+                <MinusIcon size={20} />
+              </button>
+            </div>
+          </div>
+          {/* Render remaining static stat cards */}
+          {statDataStatic.map(stat => (
             <div
               key={stat.title}
               className="bg-white rounded-xl shadow p-6 flex items-center gap-4 border hover:shadow-lg transition-shadow"
@@ -59,7 +113,7 @@ export default function Dashboard() {
                 className="flex items-center bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors gap-2"
                 onClick={() => navigate("/add-product")}
               >
-                <Plus size={18} /> Add Product
+                <PlusIcon size={18} /> Add Product
               </button>
               <button
                 className="flex items-center bg-white px-4 py-2 border rounded-md font-medium hover:bg-gray-50 transition-colors gap-2"
