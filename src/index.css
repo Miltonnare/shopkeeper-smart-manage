@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -91,7 +92,7 @@
     --sidebar-accent-foreground: 210 40% 98%;
     --sidebar-border: 216 34% 17%;
     --sidebar-ring: 217.9 14.3% 31.2%;
-    /* ... keep existing code (dark variable definitions) ... */
+    /* (dark variable definitions unchanged) */
     --deep-blue-glass: 218 38% 18%/0.8;
     --glass-text: #f8fafc;
     --light-grey: #222730;
@@ -263,24 +264,25 @@
 }
 
 /* New Modern UI update colors */
-    --accent-blue: #2563eb;
-    --accent-cyan: #1de9b6;
-    --accent-teal: #14b8a6;
-    --accent-indigo: #6366f1;
-    --accent-bg: #f7fafc;   /* Very light gray for backgrounds */
-    --accent-card: #ffffff; /* White for cards/tables */
-    --accent-dark: #1e293b; /* Charcoal */
-    --accent-muted: #7c899a;
+:root {
+  --accent-blue: #2563eb;
+  --accent-cyan: #1de9b6;
+  --accent-teal: #14b8a6;
+  --accent-indigo: #6366f1;
+  --accent-bg: #f7fafc;   /* Very light gray for backgrounds */
+  --accent-card: #ffffff; /* White for cards/tables */
+  --accent-dark: #1e293b; /* Charcoal */
+  --accent-muted: #7c899a;
 
-    --text-main: #1a202c;    /* Near black for max readability */
-    --text-secondary: #334155;
+  --text-main: #1a202c;    /* Near black for max readability */
+  --text-secondary: #334155;
 
-    --glass-light-bg: 208 44% 95%/0.80;  /* glassy white-blue */
-    --glass-blur-light: 26px;
-    --glass-border-light: 208 32% 85%/0.7;
+  --glass-light-bg: 208 44% 95%/0.80;  /* glassy white-blue */
+  --glass-blur-light: 26px;
+  --glass-border-light: 208 32% 85%/0.7;
+}
 
-
-// New glass-card for light theme
+/* New glass-card for light theme */
 .glass-card.light {
   background: hsla(var(--glass-light-bg));
   border-radius: 1.1rem;
@@ -291,18 +293,18 @@
   transition: box-shadow 0.25s, background 0.17s;
 }
 
-// Blue-gradient utility (e.g. for headers)
+/* Blue-gradient utility (e.g. for headers) */
 .bg-modern-gradient {
   background: linear-gradient(90deg, #3b82f6 0%, #14b8a6 100%);
 }
 
-// Table accent header
+/* Table accent header */
 .table-header-accent {
   background: linear-gradient(90deg, #3b82f6 0%, #14b8a6 85%);
   color: #fff !important;
 }
 
-// Accent colored text & button classes
+/* Accent colored text & button classes */
 .text-accent {
   color: var(--accent-blue);
 }
@@ -320,12 +322,12 @@
   color: #fff;
 }
 
-// Muted light bg utility for page backgrounds
+/* Muted light bg utility for page backgrounds */
 .bg-soft {
   background: var(--accent-bg);
 }
 
-// For improved table styles (optional)
+/* For improved table styles (optional) */
 .table-glass th, .table-glass td {
   background: transparent !important;
   color: var(--text-main) !important;
@@ -348,3 +350,5 @@
   background: #465161;
   border-radius: 1em;
 }
+
+/* File is getting long! Please consider refactoring and splitting for easier maintenance. */
