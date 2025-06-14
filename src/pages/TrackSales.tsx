@@ -2,11 +2,11 @@
 import TopNav from "@/components/TopNav";
 
 const sales = [
-  { id: 1, product: "Bread", qty: 40, amount: "₹400", time: "10:25 AM" },
-  { id: 2, product: "Milk", qty: 25, amount: "₹500", time: "11:00 AM" },
-  { id: 3, product: "Rice", qty: 14, amount: "₹980", time: "12:15 PM" },
-  { id: 4, product: "Oil", qty: 10, amount: "₹1200", time: "1:18 PM" },
-  { id: 5, product: "Sugar", qty: 30, amount: "₹600", time: "2:06 PM" },
+  { id: 1, product: "Bread", qty: 40, amount: "Ksh400", time: "10:25 AM" },
+  { id: 2, product: "Milk", qty: 25, amount: "Ksh500", time: "11:00 AM" },
+  { id: 3, product: "Rice", qty: 14, amount: "Ksh980", time: "12:15 PM" },
+  { id: 4, product: "Oil", qty: 10, amount: "Ksh1200", time: "1:18 PM" },
+  { id: 5, product: "Sugar", qty: 30, amount: "Ksh600", time: "2:06 PM" },
 ];
 
 export default function TrackSales() {
@@ -41,3 +41,4 @@ export default function TrackSales() {
     </div>
   );
 }
+
