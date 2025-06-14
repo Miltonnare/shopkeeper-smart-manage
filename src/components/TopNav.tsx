@@ -1,12 +1,15 @@
+
 import { Link, useLocation } from "react-router-dom";
-import { LogOut, ShoppingCart, BarChart2, Archive, Plus } from "lucide-react";
+import { LogOut, ShoppingCart, BarChart2, Archive, Plus, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
+// Add profile link to navLinks
 const navLinks = [
   { name: "Dashboard", to: "/dashboard", icon: BarChart2 },
   { name: "Track Sales", to: "/track-sales", icon: ShoppingCart },
   { name: "Sales Reports", to: "/sales-reports", icon: BarChart2 },
   { name: "Add Product", to: "/add-product", icon: Plus },
+  { name: "Profile", to: "/profile", icon: User }, // NEW
 ];
 
 export default function TopNav({ onLogout }: { onLogout?: () => void }) {
