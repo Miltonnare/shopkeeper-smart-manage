@@ -4,7 +4,6 @@ import { useAllUsersWithSales } from "@/hooks/useAllUsersWithSales";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell, TableCaption } from "@/components/ui/table";
-import { DatePicker } from "@/components/ui/calendar";
 import { toast } from "@/components/ui/use-toast";
 
 type ProfitLoss = {
@@ -143,3 +142,5 @@ export default function AdminProfitLossReport() {
     </div>
   );
 }
+
+// ... end of file
