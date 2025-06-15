@@ -20,7 +20,7 @@ export default function DashboardStats({
   onRecordSale,
 }: StatProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
       {/* Total Sales stat card */}
       <div className="glass-card light p-6 flex items-center gap-4 border shadow-xl hover:scale-[1.025] transition-all">
         <span className="bg-accent/10 border-2 border-accent rounded-xl p-3 inline-flex shadow-inner">
@@ -31,20 +31,6 @@ export default function DashboardStats({
           <div className="text-2xl font-extrabold text-accent transition-all duration-200" key={totalSales}>
             {loadingTotalSales ? "..." : `Ksh${totalSales.toLocaleString()}`}
           </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <Button
-            variant="default"
-            size="sm"
-            type="button"
-            onClick={onRecordSale}
-            disabled={!user || loadingTotalSales}
-            className="flex items-center gap-2"
-            aria-label="Record a sale"
-          >
-            <PlusIcon size={18} />
-            <span>Add Sale</span>
-          </Button>
         </div>
       </div>
       {/* Inventory stat cards */}
@@ -73,6 +59,22 @@ export default function DashboardStats({
               : "--"}
           </div>
         </div>
+      </div>
+      {/* Add Sale Button card */}
+      <div className="glass-card light p-6 flex flex-col items-center justify-center gap-4 border shadow-xl hover:scale-[1.025] transition-all">
+        <div className="font-bold mb-2 text-dark-secondary text-center">Quick Add Sale</div>
+        <Button
+          variant="default"
+          size="lg"
+          type="button"
+          onClick={onRecordSale}
+          disabled={!user || loadingTotalSales}
+          className="flex items-center gap-2 w-full justify-center"
+          aria-label="Record a sale"
+        >
+          <PlusIcon size={18} />
+          <span>Add Sale</span>
+        </Button>
       </div>
     </div>
   );
