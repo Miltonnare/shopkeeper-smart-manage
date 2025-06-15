@@ -48,28 +48,16 @@ export default function TopNav({ onLogout }: { onLogout?: () => void }) {
               </Link>
             ))}
             {!rolesLoading && isAdmin && (
-              <>
-                <Link
-                  to="/admin"
-                  className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-md font-medium transition-colors ${
-                    location.pathname.startsWith("/admin")
-                      ? "bg-accent/10 text-accent font-semibold"
-                      : "text-dark-secondary hover:bg-accent/5 hover:text-accent"
-                  }`}
-                >
-                  <BarChart2 size={18} /> Admin
-                </Link>
-                <Link
-                  to="/user-roles"
-                  className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-md font-medium transition-colors ${
-                    location.pathname.startsWith("/user-roles")
-                      ? "bg-accent/10 text-accent font-semibold"
-                      : "text-dark-secondary hover:bg-accent/5 hover:text-accent"
-                  }`}
-                >
-                  <Navigation size={18} /> User Roles
-                </Link>
-              </>
+              <Link
+                to="/user-roles"
+                className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-md font-medium transition-colors ${
+                  location.pathname.startsWith("/user-roles")
+                    ? "bg-accent/10 text-accent font-semibold"
+                    : "text-dark-secondary hover:bg-accent/5 hover:text-accent"
+                }`}
+              >
+                <Navigation size={18} /> User Roles
+              </Link>
             )}
           </div>
         </div>

@@ -64,15 +64,6 @@ const App = () => (
             path="/user-roles"
             element={<UserRoles />}
           />
-          {/* NEW: Admin Page */}
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <Admin />
-              </ProtectedRoute>
-            }
-          />
           {/* Protected routes */}
           <Route
             path="/track-sales"

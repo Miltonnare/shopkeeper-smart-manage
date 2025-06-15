@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
+import AdminProfitLossReport from "@/components/AdminProfitLossReport";
 
 // Enum for allowed role values
 const ROLE_VALUES = ["admin", "manager", "sales", "inventory", "viewer"] as const;
@@ -97,6 +98,12 @@ export default function UserRoles() {
       <main className="max-w-4xl mx-auto px-4 py-12 flex flex-col items-center text-center flex-1 w-full">
         <h1 className="text-4xl font-bold mb-4 text-accent drop-shadow">Admin Roles Management</h1>
         <p className="text-lg text-muted-foreground mb-8">Manage user roles, status, and permissions below.</p>
+
+        {/* Admin-only: Profit/Loss Report */}
+        <div className="w-full">
+          <AdminProfitLossReport />
+        </div>
+
         <form onSubmit={handleAdd} className="mb-6 flex flex-col sm:flex-row gap-2 sm:gap-4 items-center">
           <input
             className="border border-slate-300 rounded px-3 py-2 w-56"
