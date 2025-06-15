@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,7 +16,7 @@ import Login from "./pages/Login";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import UserRoles from "./pages/UserRoles";
-import Admin from "./pages/Admin";
+// Removed: import Admin from "./pages/Admin";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
