@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 
 export default function Index() {
@@ -18,7 +17,7 @@ export default function Index() {
       <div className="absolute top-1/2 left-36 -translate-y-1/2 w-56 h-56 bg-emerald-200/15 rounded-full blur-2xl z-0" />
       <div className="absolute bottom-44 left-1/2 -translate-x-1/2 w-52 h-48 bg-white/20 rounded-full blur-3xl z-0" />
 
-      <nav className="w-full glass-card bg-white/80 shadow-lg px-8 py-4 flex items-center justify-between border-b backdrop-blur-xl mt-4 mb-6 z-20 relative">
+      <nav className="w-full glass-card bg-white/90 shadow-lg px-8 py-4 flex items-center justify-between border-b backdrop-blur-xl mt-4 mb-6 z-20 relative">
         <span className="text-2xl font-bold tracking-tight text-primary drop-shadow">SmartShop</span>
         <div className="flex gap-6">
           <Link to="/" className="hover:text-primary font-medium transition">Home</Link>
@@ -35,20 +34,20 @@ export default function Index() {
             className="text-6xl font-extrabold tracking-[0.18em] select-none font-sans"
             style={{
               color: "#334155",
-              opacity: 0.27,
+              opacity: 0.33,
               letterSpacing: "0.16em",
-              textShadow: "0 4px 24px #dbeafea1, 0 2px 10px #eef2ff60",
-              filter: "blur(0.7px)",
+              textShadow: "0 4px 24px #dbeafea1, 0 2px 10px #0003",
+              filter: "blur(0.3px)",
             }}
           >
             SmartShop
           </span>
         </div>
-        <h1 className="text-4xl font-bold mb-4 text-primary drop-shadow-sm bg-gradient-to-r from-blue-700 via-cyan-700 to-emerald-400 bg-clip-text text-transparent">
+        <h1 className="text-4xl font-bold mb-4 text-blue-900 drop-shadow-sm bg-gradient-to-r from-blue-700 via-cyan-700 to-emerald-400 bg-clip-text text-transparent">
           Welcome to SmartShop
         </h1>
-        <p className="text-lg mb-8 text-muted-foreground backdrop-blur-lg glass-card light px-6 py-4 rounded-xl">
-          Empowering shopkeepers with simple tools for Inventory, Sales & Stock Management.
+        <p className="text-lg mb-8 text-gray-800 backdrop-blur-lg px-6 py-4 rounded-xl bg-white/95 font-medium shadow">
+          Empowering shopkeepers with simple tools for Inventory, Sales &amp; Stock Management.
         </p>
         <Link
           to="/login"
@@ -58,29 +57,29 @@ export default function Index() {
         </Link>
 
         <section className="w-full">
-          <h2 className="text-2xl font-bold mb-4 text-blue-900">Features</h2>
+          <h2 className="text-2xl font-bold mb-4 text-blue-900 drop-shadow">Features</h2>
           <div className="grid md:grid-cols-2 gap-8 text-left mb-12">
-            <div className="glass-card bg-white/80 p-6 shadow-md rounded-xl border">
-              <h3 className="font-semibold text-lg mb-2 text-primary">Inventory Management</h3>
-              <p className="text-muted-foreground">
+            <div className="glass-card bg-white/95 p-6 shadow-md rounded-xl border">
+              <h3 className="font-semibold text-lg mb-2 text-blue-800 drop-shadow">Inventory Management</h3>
+              <p className="text-gray-800 font-medium">
                 Easily track, update, and manage your shop's inventory. Get notified about low stock and avoid running out of products.
               </p>
             </div>
-            <div className="glass-card bg-white/80 p-6 shadow-md rounded-xl border">
-              <h3 className="font-semibold text-lg mb-2 text-primary">Sales Tracking</h3>
-              <p className="text-muted-foreground">
+            <div className="glass-card bg-white/95 p-6 shadow-md rounded-xl border">
+              <h3 className="font-semibold text-lg mb-2 text-blue-800 drop-shadow">Sales Tracking</h3>
+              <p className="text-gray-800 font-medium">
                 Monitor your daily sales, analyze patterns, and ensure accurate billing with our easy-to-use sales dashboard.
               </p>
             </div>
-            <div className="glass-card bg-white/80 p-6 shadow-md rounded-xl border">
-              <h3 className="font-semibold text-lg mb-2 text-primary">Price Fluctuation Monitoring</h3>
-              <p className="text-muted-foreground">
+            <div className="glass-card bg-white/95 p-6 shadow-md rounded-xl border">
+              <h3 className="font-semibold text-lg mb-2 text-blue-800 drop-shadow">Price Fluctuation Monitoring</h3>
+              <p className="text-gray-800 font-medium">
                 Stay updated with changing market prices—adjust your product pricing in real-time to maximize profitability.
               </p>
             </div>
-            <div className="glass-card bg-white/80 p-6 shadow-md rounded-xl border">
-              <h3 className="font-semibold text-lg mb-2 text-primary">Loss Tracking & Stock Planning</h3>
-              <p className="text-muted-foreground">
+            <div className="glass-card bg-white/95 p-6 shadow-md rounded-xl border">
+              <h3 className="font-semibold text-lg mb-2 text-blue-800 drop-shadow">Loss Tracking &amp; Stock Planning</h3>
+              <p className="text-gray-800 font-medium">
                 Track shop losses and plan stocks more efficiently with our smart analytics and planning tools.
               </p>
             </div>
@@ -88,16 +87,16 @@ export default function Index() {
         </section>
 
         <section className="w-full mb-16">
-          <h2 className="text-2xl font-bold mb-4 text-blue-900">About SmartShop</h2>
-          <p className="text-muted-foreground leading-relaxed glass-card light px-6 py-4 rounded-xl bg-white/70 backdrop-blur">
-            SmartShop is built to simplify day-to-day shop operations for retailers. 
+          <h2 className="text-2xl font-bold mb-4 text-blue-900 drop-shadow">About SmartShop</h2>
+          <p className="text-gray-800 leading-relaxed px-6 py-4 rounded-xl bg-white/95 shadow font-medium">
+            SmartShop is built to simplify day-to-day shop operations for retailers.
             From small stores to thriving local businesses, our platform enables users to manage products, sales, stock, and more from one beautiful and simple dashboard. <br />
             We believe technology should make life easier, and SmartShop does just that.
           </p>
         </section>
       </main>
 
-      <footer className="glass-card border-t py-6 px-4 mt-auto text-center text-muted-foreground text-sm mb-4 bg-white/80 backdrop-blur">
+      <footer className="glass-card border-t py-6 px-4 mt-auto text-center text-gray-700 text-sm mb-4 bg-white/95 backdrop-blur">
         <div className="max-w-3xl mx-auto flex flex-col items-center gap-2">
           <div className="flex gap-4 mb-1">
             <Link to="/" className="hover:underline text-primary">Home</Link>
