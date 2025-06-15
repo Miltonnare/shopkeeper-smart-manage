@@ -1,3 +1,4 @@
+
 import TopNav from "@/components/TopNav";
 import SalesTrendsChart from "@/components/SalesTrendsChart";
 import { useEffect, useState } from "react";
@@ -49,9 +50,23 @@ export default function SalesReports() {
   const totalSales = sales.reduce((sum, sale) => sum + Number(sale.total_amount), 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#e3edf9] via-[#c7f6ed] to-[#fafbfe]">
+    <div
+      className="min-h-screen flex flex-col relative overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(120deg, #2563eb 0%, #2196f3 32%, #17c7b7 68%, #a78bfa 100%)",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed",
+      }}
+    >
+      {/* Animated/faint background blobs */}
+      <div className="absolute top-10 left-[-5rem] w-80 h-80 bg-pink-400/30 rounded-full blur-3xl z-0 animate-pulse" />
+      <div className="absolute bottom-[-5rem] right-[-4rem] w-96 h-80 bg-indigo-400/25 rounded-full blur-3xl z-0 animate-pulse" />
+      <div className="absolute top-1/2 left-36 -translate-y-1/2 w-56 h-56 bg-emerald-200/15 rounded-full blur-2xl z-0" />
+      <div className="absolute bottom-44 left-1/2 -translate-x-1/2 w-52 h-48 bg-white/20 rounded-full blur-3xl z-0" />
+
       <TopNav />
-      <main className="max-w-4xl mx-auto px-4 py-10">
+      <main className="max-w-4xl mx-auto px-4 py-10 flex-1 w-full z-10 relative">
         <h2 className="text-2xl font-bold mb-6 bg-modern-gradient bg-clip-text text-transparent drop-shadow">
           Sales Reports &amp; Trends
         </h2>
