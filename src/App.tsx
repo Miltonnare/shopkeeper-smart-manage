@@ -14,6 +14,7 @@ import ContactUs from "./pages/ContactUs";
 import Login from "./pages/Login";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
+import UserRoles from "./pages/UserRoles";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -57,6 +58,15 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           {/* Dashboard is now PUBLIC */}
           <Route path="/dashboard" element={<Dashboard />} />
+          {/* Admin-only User Roles Page */}
+          <Route
+            path="/user-roles"
+            element={
+              // Use the same user roles logic as in navigation;
+              // no need to fully protect, the page itself reroutes/blocks if not admin
+              <UserRoles />
+            }
+          />
           {/* Protected routes */}
           <Route
             path="/track-sales"
