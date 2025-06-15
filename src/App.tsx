@@ -15,6 +15,7 @@ import Login from "./pages/Login";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import UserRoles from "./pages/UserRoles";
+import Admin from "./pages/Admin";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -61,10 +62,15 @@ const App = () => (
           {/* Admin-only User Roles Page */}
           <Route
             path="/user-roles"
+            element={<UserRoles />}
+          />
+          {/* NEW: Admin Page */}
+          <Route
+            path="/admin"
             element={
-              // Use the same user roles logic as in navigation;
-              // no need to fully protect, the page itself reroutes/blocks if not admin
-              <UserRoles />
+              <ProtectedRoute>
+                <Admin />
+              </ProtectedRoute>
             }
           />
           {/* Protected routes */}

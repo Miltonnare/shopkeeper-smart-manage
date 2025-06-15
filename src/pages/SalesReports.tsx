@@ -55,10 +55,6 @@ export default function SalesReports() {
         <h2 className="text-2xl font-bold mb-6 bg-modern-gradient bg-clip-text text-transparent drop-shadow">
           Sales Reports &amp; Trends
         </h2>
-        {/* Admin Profit/Loss panel */}
-        {isAdmin && !rolesLoading && (
-          <AdminProfitLossReport />
-        )}
         <div className="mb-8 flex flex-col sm:flex-row gap-4">
           <div className="bg-white glass-card shadow text-lg px-6 py-4 rounded-lg border font-bold flex-1 flex flex-col items-center">
             <span className="text-sm text-dark-secondary mb-2">Total Sales</span>
