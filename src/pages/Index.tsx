@@ -18,12 +18,22 @@ export default function Index() {
       <div className="absolute bottom-44 left-1/2 -translate-x-1/2 w-52 h-48 bg-white/20 rounded-full blur-3xl z-0" />
 
       <nav className="w-full glass-card bg-white/90 shadow-lg px-8 py-4 flex items-center justify-between border-b backdrop-blur-xl mt-4 mb-6 z-20 relative">
-        <span className="text-2xl font-bold tracking-tight text-primary drop-shadow">SmartShop</span>
+        <span
+          className="text-2xl font-extrabold tracking-tight text-accent drop-shadow-lg"
+          style={{
+            color: '#1741b7',
+            textShadow: '0 2px 12px #dbeafe, 0 2px 8px #0007'
+          }}
+        >
+          SmartShop
+        </span>
         <div className="flex gap-6">
-          <Link to="/" className="hover:text-primary font-medium transition">Home</Link>
-          <Link to="/about" className="hover:text-primary font-medium transition">About</Link>
-          <Link to="/contact-us" className="hover:text-primary font-medium transition">Contact Us</Link>
-          <Link to="/login" className="px-4 py-2 rounded-md bg-gradient-to-tr from-blue-700 to-purple-500 text-white font-semibold shadow-md hover:scale-105 focus:ring-2 ring-offset-2 ring-blue-700 transition">Login / Sign Up</Link>
+          <Link to="/" className="hover:text-accent text-accent font-semibold transition">Home</Link>
+          <Link to="/about" className="hover:text-accent text-accent font-semibold transition">About</Link>
+          <Link to="/contact-us" className="hover:text-accent text-accent font-semibold transition">Contact Us</Link>
+          <Link to="/login" className="px-4 py-2 rounded-md bg-gradient-to-tr from-blue-700 to-purple-500 text-white font-semibold shadow-md hover:scale-105 focus:ring-2 ring-offset-2 ring-blue-700 transition">
+            Login / Sign Up
+          </Link>
         </div>
       </nav>
 
