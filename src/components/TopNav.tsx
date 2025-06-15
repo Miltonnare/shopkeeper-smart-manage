@@ -28,8 +28,9 @@ export default function TopNav({ onLogout }: { onLogout?: () => void }) {
 
   return (
     <nav className="w-full px-0 py-3 bg-white/95 border-b border-slate-200 shadow-md z-30 glass-card light">
-      <div className="max-w-6xl mx-auto w-full flex flex-wrap items-center justify-between px-4 sm:px-8 gap-y-2">
-        <div className="flex items-center gap-3 sm:gap-8 min-w-0 flex-shrink">
+      <div className="max-w-6xl mx-auto w-full flex items-center justify-between px-4 sm:px-8 gap-y-2">
+        {/* Left: Logo + Nav Links */}
+        <div className="flex items-center min-w-0 flex-shrink gap-3 sm:gap-8 flex-wrap">
           <span className="text-2xl font-extrabold tracking-tight text-accent whitespace-nowrap" style={{ letterSpacing: '1.5px' }}>
             SmartShop
           </span>
@@ -61,7 +62,8 @@ export default function TopNav({ onLogout }: { onLogout?: () => void }) {
             )}
           </div>
         </div>
-        <div className="flex-shrink-0">
+        {/* Right: Logout Button */}
+        <div className="ml-auto flex-shrink-0">
           <button
             onClick={handleLogout}
             className="flex items-center gap-2 px-3 py-2 rounded-md font-semibold bg-accent-btn shadow-md hover:scale-105 transition focus:ring-2 ring-accent whitespace-nowrap"
