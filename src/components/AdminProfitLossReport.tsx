@@ -1,191 +1,144 @@
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAllUsersWithSales } from "@/hooks/useAllUsersWithSales";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from "@/components/ui/table";
-import { format, parseISO } from "date-fns";
+import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell, TableCaption } from "@/components/ui/table";
+import { DatePicker } from "@/components/ui/calendar";
+import { toast } from "@/components/ui/use-toast";
 
-// Util to get start/end of today for default range
-function getDefaultRange() {
-  const end = new Date();
-  const start = new Date();
-  start.setDate(end.getDate() - 30);
-  start.setHours(0, 0, 0, 0);
-  end.setHours(23, 59, 59, 999);
-  return {
-    start: start.toISOString().slice(0, 10),
-    end: end.toISOString().slice(0, 10),
-  };
-}
+type ProfitLoss = {
+  totalSales: number;
+  totalCost: number;
+  totalProfit: number;
+};
 
 export default function AdminProfitLossReport() {
-  const { data: users, isLoading: usersLoading } = useAllUsersWithSales();
-  const [userId, setUserId] = useState<string>("");
-  const [startDate, setStartDate] = useState(getDefaultRange().start);
-  const [endDate, setEndDate] = useState(getDefaultRange().end);
-  const [summary, setSummary] = useState<null | {
-    totalSales: number;
-    totalCost: number;
-    profit: number;
-    rows: {
-      date: string;
-      product: string;
-      quantity: number;
-      revenue: number;
-      cost: number;
-      profit: number;
-    }[]
-  }>(null);
+  const { data: users, isLoading } = useAllUsersWithSales();
+  const [selectedUser, setSelectedUser] = useState<string>("");
+  const [from, setFrom] = useState<Date | null>(null);
+  const [to, setTo] = useState<Date | null>(null);
+  const [result, setResult] = useState<ProfitLoss | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleRunReport = async (e: React.FormEvent) => {
+  const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userId) return;
-    setLoading(true);
-    setSummary(null);
-    // Get sales for user in range
-    const { data: sales, error } = await supabase
-      .from("sales")
-      .select("created_at, product_id, product_name, quantity, unit_price, total_amount")
-      .eq("user_id", userId)
-      .gte("created_at", startDate)
-      .lte("created_at", endDate);
-
-    if (error) {
-      setSummary(null);
-      setLoading(false);
+    if (!selectedUser || !from || !to) {
+      toast({ title: "Select user and date range" });
       return;
     }
+    setLoading(true);
+    setResult(null);
+    try {
+      // Fetch all sales for this user in range
+      const { data: sales, error } = await supabase
+        .from("sales")
+        .select("quantity, unit_price, product_id, total_amount, created_at")
+        .eq("user_id", selectedUser)
+        .gte("created_at", from.toISOString())
+        .lte("created_at", to.toISOString());
 
-    // Get products (to get the buying_price)
-    const prodIds = Array.from(new Set((sales ?? []).map((s: any) => s.product_id)));
-    const { data: products } = await supabase
-      .from("products")
-      .select("id, buying_price")
-      .in("id", prodIds);
+      if (error) throw error;
+      if (!sales || sales.length === 0) {
+        setResult({ totalSales: 0, totalCost: 0, totalProfit: 0 });
+        setLoading(false);
+        return;
+      }
+      // Fetch product info for buying prices
+      const uniqueProductIds = [
+        ...new Set(sales.map((s: any) => s.product_id)),
+      ];
+      const { data: products, error: prodError } = await supabase
+        .from("products")
+        .select("id, buying_price")
+        .in("id", uniqueProductIds);
 
-    // Calculate profit by row and sum
-    let totalSales = 0, totalCost = 0, rows: any[] = [];
-    (sales ?? []).forEach((s: any) => {
-      const buy = products?.find((p: any) => p.id === s.product_id)?.buying_price ?? 0;
-      const cost = Number(buy) * s.quantity;
-      const revenue = Number(s.total_amount) || 0;
-      const profit = revenue - cost;
-      rows.push({
-        date: format(parseISO(s.created_at), "yyyy-MM-dd"),
-        product: s.product_name ?? "-",
-        quantity: s.quantity,
-        revenue,
-        cost,
-        profit,
-      });
-      totalSales += revenue;
-      totalCost += cost;
-    });
-    setSummary({
-      totalSales,
-      totalCost,
-      profit: totalSales - totalCost,
-      rows,
-    });
+      if (prodError) throw prodError;
+
+      // Calculate
+      let totalSales = 0;
+      let totalCost = 0;
+
+      for (const sale of sales) {
+        const qty = Number(sale.quantity) || 0;
+        const amount = Number(sale.total_amount) || 0;
+        totalSales += amount;
+        const product = products.find((p: any) => p.id === sale.product_id);
+        const buyingPrice = product ? Number(product.buying_price) : 0;
+        totalCost += buyingPrice * qty;
+      }
+      const totalProfit = totalSales - totalCost;
+      setResult({ totalSales, totalCost, totalProfit });
+    } catch (err: any) {
+      toast({ title: "Error", description: String(err?.message) });
+    }
     setLoading(false);
   };
 
   return (
-    <div className="mb-10 w-full max-w-2xl mx-auto text-left bg-white rounded shadow-lg p-8">
-      <h3 className="font-bold text-2xl text-accent mb-2">Profit/Loss Report by User &amp; Period</h3>
-      <form onSubmit={handleRunReport} className="flex flex-wrap gap-3 mb-4 items-end">
+    <div className="mb-8 glass-card border shadow-xl p-6 flex flex-col gap-3 items-start w-full">
+      <h2 className="text-lg font-semibold mb-3 text-accent">Admin Profit / Loss Report</h2>
+      <form className="flex flex-wrap items-end gap-4 mb-2" onSubmit={handleGenerate}>
         <div>
-          <label className="text-sm font-medium">User</label><br />
+          <label className="block mb-1 text-xs font-semibold">User</label>
           <select
-            value={userId}
-            onChange={e => setUserId(e.target.value)}
+            value={selectedUser}
+            onChange={e => setSelectedUser(e.target.value)}
+            className="px-3 py-2 border rounded min-w-[170px]"
             required
-            className="px-3 py-2 border rounded min-w-[160px]"
           >
-            <option value="">-- Select User --</option>
-            {users && users.map(u => (
-              <option key={u.id} value={u.id}>{u.name}</option>
+            <option value="">Select User</option>
+            {users?.map((u: any) => (
+              <option key={u.id} value={u.id}>
+                {u.name}
+              </option>
             ))}
           </select>
         </div>
         <div>
-          <label className="text-sm font-medium">Start Date</label><br />
+          <label className="block mb-1 text-xs font-semibold">From</label>
           <input
             type="date"
-            value={startDate}
-            onChange={e => setStartDate(e.target.value)}
+            value={from ? from.toISOString().slice(0, 10) : ""}
+            onChange={e => setFrom(e.target.value ? new Date(e.target.value) : null)}
             className="px-3 py-2 border rounded"
             required
-            max={endDate}
           />
         </div>
         <div>
-          <label className="text-sm font-medium">End Date</label><br />
+          <label className="block mb-1 text-xs font-semibold">To</label>
           <input
             type="date"
-            value={endDate}
-            onChange={e => setEndDate(e.target.value)}
+            value={to ? to.toISOString().slice(0, 10) : ""}
+            onChange={e => setTo(e.target.value ? new Date(e.target.value) : null)}
             className="px-3 py-2 border rounded"
             required
-            min={startDate}
           />
         </div>
-        <Button type="submit" className="mt-1" disabled={loading || usersLoading || !userId}>
-          {loading ? "Loading..." : "Show Report"}
+        <Button type="submit" disabled={loading} className="h-10 mt-5">
+          {loading ? "Loading..." : "Generate"}
         </Button>
       </form>
-      {!loading && summary && (
-        <div>
-          <div className="flex gap-6 mb-3">
-            <div>
-              <div className="text-xs text-muted-foreground">Total Sales</div>
-              <div className="font-bold text-accent">Ksh{summary.totalSales.toLocaleString()}</div>
-            </div>
-            <div>
-              <div className="text-xs text-muted-foreground">Total Cost</div>
-              <div className="font-bold text-orange-600">Ksh{summary.totalCost.toLocaleString()}</div>
-            </div>
-            <div>
-              <div className="text-xs text-muted-foreground">Profit/Loss</div>
-              <div className={`font-bold ${summary.profit < 0 ? "text-red-600" : "text-green-600"}`}>
-                Ksh{summary.profit.toLocaleString()}
-              </div>
-            </div>
-          </div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead>Product</TableHead>
-                <TableHead>Qty</TableHead>
-                <TableHead>Revenue</TableHead>
-                <TableHead>Cost</TableHead>
-                <TableHead>Profit</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {summary.rows.map((r, i) => (
-                <TableRow key={i}>
-                  <TableCell>{r.date}</TableCell>
-                  <TableCell>{r.product}</TableCell>
-                  <TableCell>{r.quantity}</TableCell>
-                  <TableCell>Ksh{r.revenue.toLocaleString()}</TableCell>
-                  <TableCell>Ksh{r.cost.toLocaleString()}</TableCell>
-                  <TableCell className={r.profit < 0 ? "text-red-600" : "text-green-700"}>
-                    Ksh{r.profit.toLocaleString()}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      )}
-      {!loading && !summary && (
-        <div className="text-sm text-muted-foreground mt-2">
-          Select a user and date range to view report.
-        </div>
+      {result && (
+        <Table>
+          <TableCaption>Totals for selected user and period.</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Total Sales</TableHead>
+              <TableHead>Total Cost</TableHead>
+              <TableHead>Total Profit/Loss</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell>Ksh{result.totalSales.toLocaleString()}</TableCell>
+              <TableCell>Ksh{result.totalCost.toLocaleString()}</TableCell>
+              <TableCell className={result.totalProfit >= 0 ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
+                Ksh{result.totalProfit.toLocaleString()}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       )}
     </div>
   );
