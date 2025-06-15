@@ -1,5 +1,6 @@
 
-import { BarChart2, Archive, ShoppingCart, Plus as PlusIcon, Minus as MinusIcon } from "lucide-react";
+import { BarChart2, Archive, ShoppingCart, Plus as PlusIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface StatProps {
   totalSales: number;
@@ -32,26 +33,18 @@ export default function DashboardStats({
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <button
-            aria-label="Record a sale"
-            className="bg-accent-btn p-1 rounded hover:scale-110 transition"
+          <Button
+            variant="default"
+            size="sm"
+            type="button"
             onClick={onRecordSale}
-            type="button"
             disabled={!user || loadingTotalSales}
+            className="flex items-center gap-2"
+            aria-label="Record a sale"
           >
-            <PlusIcon size={20} />
-          </button>
-          <button
-            aria-label="Cannot decrement sales"
-            className="bg-accent-btn p-1 rounded hover:scale-110 transition"
-            onClick={() => {
-              alert("Decrementing total sales is not supported for data integrity.");
-            }}
-            type="button"
-            disabled
-          >
-            <MinusIcon size={20} />
-          </button>
+            <PlusIcon size={18} />
+            <span>Add Sale</span>
+          </Button>
         </div>
       </div>
       {/* Inventory stat cards */}
@@ -84,3 +77,4 @@ export default function DashboardStats({
     </div>
   );
 }
+
