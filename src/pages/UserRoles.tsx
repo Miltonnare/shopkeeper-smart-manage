@@ -10,6 +10,10 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 
+// Enum for allowed role values
+const ROLE_VALUES = ["admin", "manager", "sales", "inventory", "viewer"] as const;
+type RoleOption = typeof ROLE_VALUES[number];
+
 export default function UserRoles() {
   const { roles, loading } = useUserRoles();
   const navigate = useNavigate();
@@ -17,7 +21,9 @@ export default function UserRoles() {
 
   // Admin viewing all users
   const { data: userRoles, isLoading, refetch } = useAllUserRoles();
-  const [addForm, setAddForm] = useState({ user_id: "", role: "manager" });
+
+  // Restrict add form to valid RoleOption
+  const [addForm, setAddForm] = useState<{ user_id: string; role: RoleOption }>({ user_id: "", role: "manager" });
   const [adding, setAdding] = useState(false);
 
   useEffect(() => {
@@ -36,19 +42,21 @@ export default function UserRoles() {
 
   if (!isAdmin) return null;
 
-  // Add role for user (by user_id for now, can use email mapping/profile for more UX)
+  // Add role for user (by user_id for now)
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     setAdding(true);
     const { user_id, role } = addForm;
     try {
-      const { error } = await supabase.from("user_roles").insert([
-        {
-          user_id,
-          role,
-          active: true,
-        }
-      ]);
+      const { error } = await supabase
+        .from("user_roles")
+        .insert([
+          {
+            user_id,
+            role, // type RoleOption, matches enum
+            active: true,
+          }
+        ]);
       if (error) throw error;
       toast({ title: "Role Added", description: "Successfully added role." });
       setAddForm({ user_id: "", role: "manager" });
@@ -100,13 +108,14 @@ export default function UserRoles() {
           <select
             className="border border-slate-300 rounded px-3 py-2"
             value={addForm.role}
-            onChange={e => setAddForm(f => ({ ...f, role: e.target.value }))}
+            onChange={e => setAddForm(f => ({
+              ...f,
+              role: e.target.value as RoleOption,
+            }))}
           >
-            <option value="admin">admin</option>
-            <option value="manager">manager</option>
-            <option value="sales">sales</option>
-            <option value="inventory">inventory</option>
-            <option value="viewer">viewer</option>
+            {ROLE_VALUES.map(role => (
+              <option key={role} value={role}>{role}</option>
+            ))}
           </select>
           <Button type="submit" disabled={adding}>
             {adding ? "Adding..." : "Add User"}
