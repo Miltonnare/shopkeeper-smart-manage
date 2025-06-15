@@ -35,9 +35,25 @@ const Login = () => {
           </a>
         </div>
       </nav>
+
+      {/* Logo above card */}
+      <div className="mt-48 mb-2 flex flex-col items-center z-20">
+        <span
+          className="text-5xl font-extrabold tracking-tight select-none"
+          style={{
+            color: "#475569",      // muted slate gray
+            opacity: 0.36,         // dimmed
+            letterSpacing: "0.15em",
+            textShadow: "0 2px 24px #d1dbeec0" // subtle blur for softness
+          }}
+        >
+          SmartShop
+        </span>
+      </div>
+
       <form
         className="glass-card shadow-2xl p-10 space-y-8 w-full max-w-md border
-            mt-32 z-10 relative flex flex-col"
+            mt-4 z-10 relative flex flex-col"
         onSubmit={handleLogin}
       >
         <div className="text-center space-y-2">
