@@ -1,7 +1,18 @@
-
 import { Link } from "react-router-dom";
+import * as React from "react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+
+const navLinks = [
+  { to: "/", label: "Home" },
+  { to: "/about", label: "About" },
+  { to: "/contact-us", label: "Contact Us" },
+];
 
 export default function Index() {
+  // Mobile menu open state
+  const [open, setOpen] = React.useState(false);
+
   return (
     <div
       className="min-h-screen flex flex-col relative overflow-hidden"
@@ -18,7 +29,7 @@ export default function Index() {
       <div className="absolute top-1/2 left-36 -translate-y-1/2 w-56 h-56 bg-emerald-200/15 rounded-full blur-2xl z-0" />
       <div className="absolute bottom-44 left-1/2 -translate-x-1/2 w-52 h-48 bg-white/20 rounded-full blur-3xl z-0" />
 
-      {/* Responsive Nav */}
+      {/* Responsive Nav with Hamburger */}
       <nav className="w-full glass-card bg-white/95 shadow-lg px-4 sm:px-8 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between border-b backdrop-blur-xl mt-4 mb-6 z-20 relative">
         <span
           className="text-2xl sm:text-3xl font-extrabold tracking-tight text-blue-900 select-none drop-shadow-lg py-1"
@@ -29,39 +40,62 @@ export default function Index() {
         >
           SmartShop
         </span>
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 mt-3 sm:mt-0">
-          <Link
-            to="/"
-            className="font-extrabold text-blue-800 hover:text-blue-700 transition rounded px-4 py-2 text-base sm:text-lg shadow hover:bg-blue-100 focus:bg-blue-200 focus:outline-none"
-            style={{
-              textShadow: "0 1px 6px #fff,0 1px 2px #c7d2fe,0 0px 0px #000",
-            }}
-          >
-            Home
-          </Link>
-          <Link
-            to="/about"
-            className="font-extrabold text-blue-800 hover:text-blue-700 transition rounded px-4 py-2 text-base sm:text-lg shadow hover:bg-blue-100 focus:bg-blue-200 focus:outline-none"
-            style={{
-              textShadow: "0 1px 6px #fff,0 1px 2px #c7d2fe,0 0px 0px #000",
-            }}
-          >
-            About
-          </Link>
-          <Link
-            to="/contact-us"
-            className="font-extrabold text-blue-800 hover:text-blue-700 transition rounded px-4 py-2 text-base sm:text-lg shadow hover:bg-blue-100 focus:bg-blue-200 focus:outline-none"
-            style={{
-              textShadow: "0 1px 6px #fff,0 1px 2px #c7d2fe,0 0px 0px #000",
-            }}
-          >
-            Contact Us
-          </Link>
+        {/* Hamburger Icon only on mobile (sm:hidden) */}
+        <div className="flex-1 flex items-center justify-end sm:hidden">
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <button
+                className="p-2 rounded-md hover:bg-blue-100 transition focus:ring-2 focus:ring-blue-600"
+                aria-label="Open navigation menu"
+                onClick={() => setOpen(true)}
+              >
+                <Menu size={28} />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="right" className="p-0 w-60 bg-white shadow-lg">
+              <nav className="flex flex-col gap-2 mt-10 px-6">
+                {navLinks.map((link) => (
+                  <Link
+                    to={link.to}
+                    key={link.label}
+                    className="font-extrabold text-blue-800 hover:text-blue-700 transition rounded px-4 py-2 text-lg hover:bg-blue-100"
+                    onClick={() => setOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                <Link
+                  to="/auth"
+                  className="w-full mt-4 px-4 py-2 rounded-md bg-gradient-to-tr from-blue-700 to-purple-500 text-white font-extrabold shadow-md text-center text-lg"
+                  onClick={() => setOpen(false)}
+                >
+                  Login / Sign Up
+                </Link>
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
+        {/* Regular nav for desktop */}
+        <div className="hidden sm:flex flex-col sm:flex-row gap-3 sm:gap-6 mt-3 sm:mt-0">
+          {navLinks.map((link) => (
+            <Link
+              to={link.to}
+              key={link.label}
+              className="font-extrabold text-blue-800 hover:text-blue-700 transition rounded px-4 py-2 text-base sm:text-lg shadow hover:bg-blue-100 focus:bg-blue-200 focus:outline-none"
+              style={{
+                textShadow:
+                  "0 1px 6px #fff,0 1px 2px #c7d2fe,0 0px 0px #000",
+              }}
+            >
+              {link.label}
+            </Link>
+          ))}
           <Link
             to="/auth"
             className="px-4 py-2 mt-1 sm:mt-0 rounded-md bg-gradient-to-tr from-blue-700 to-purple-500 text-white font-extrabold shadow-md hover:scale-105 focus:ring-2 ring-offset-2 ring-blue-700 transition text-base sm:text-lg min-w-[120px] text-center"
             style={{
-              textShadow: "0 1px 8px #3b82f6, 0 2px 2px #9333ea",
+              textShadow:
+                "0 1px 8px #3b82f6, 0 2px 2px #9333ea",
             }}
           >
             Login / Sign Up
