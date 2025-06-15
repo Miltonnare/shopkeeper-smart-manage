@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useAllUsers } from "@/hooks/useAllUsers";
 import { supabase } from "@/integrations/supabase/client";
@@ -105,20 +104,18 @@ export default function AdminProfitLossReport() {
             onChange={e => setInputSearch(e.target.value)}
             className="mb-2"
           />
-          <Select value={selectedUser} onValueChange={setSelectedUser}>
+          <Select value={selectedUser} onValueChange={setSelectedUser} disabled={!filteredUsers || filteredUsers.length === 0}>
             <SelectTrigger>
               <SelectValue placeholder="Select User" />
             </SelectTrigger>
             <SelectContent className="max-h-52">
-              {filteredUsers && filteredUsers.length > 0 ? (
+              {filteredUsers && filteredUsers.length > 0 &&
                 filteredUsers.map((u: any) => (
                   <SelectItem key={u.id} value={u.id}>
                     {`${u.first_name || ""} ${u.last_name || ""}`.trim() || u.id}
                   </SelectItem>
                 ))
-              ) : (
-                <SelectItem value="" disabled>No users found</SelectItem>
-              )}
+              }
             </SelectContent>
           </Select>
         </div>
