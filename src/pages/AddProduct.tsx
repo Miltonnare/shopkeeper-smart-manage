@@ -64,13 +64,29 @@ export default function AddProduct() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div
+      className="min-h-screen flex flex-col relative overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(120deg, #2563eb 0%, #2196f3 32%, #17c7b7 68%, #a78bfa 100%)",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed",
+      }}
+    >
+      {/* Animated/faint background blobs */}
+      <div className="absolute top-10 left-[-5rem] w-80 h-80 bg-pink-400/30 rounded-full blur-3xl z-0 animate-pulse" />
+      <div className="absolute bottom-[-5rem] right-[-4rem] w-96 h-80 bg-indigo-400/25 rounded-full blur-3xl z-0 animate-pulse" />
+      <div className="absolute top-1/2 left-36 -translate-y-1/2 w-56 h-56 bg-emerald-200/15 rounded-full blur-2xl z-0" />
+      <div className="absolute bottom-44 left-1/2 -translate-x-1/2 w-52 h-48 bg-white/20 rounded-full blur-3xl z-0" />
+
       <TopNav />
-      <main className="max-w-md mx-auto px-4 py-10">
-        <h2 className="text-2xl font-bold mb-6">Add New Product</h2>
+      <main className="max-w-md mx-auto px-4 py-10 flex-1 w-full z-10 relative">
+        <h2 className="text-2xl font-bold mb-6 bg-modern-gradient bg-clip-text text-transparent drop-shadow">
+          Add New Product
+        </h2>
         <form
           onSubmit={handleAdd}
-          className="bg-white p-8 rounded-xl shadow border space-y-6"
+          className="bg-white/95 glass-card p-8 rounded-xl shadow border space-y-6"
         >
           <div>
             <label className="block text-gray-700 mb-2 font-medium">Product Name</label>
@@ -83,7 +99,7 @@ export default function AddProduct() {
               placeholder="E.g. Oil, Rice"
             />
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-col sm:flex-row">
             <div className="flex-1">
               <label className="block text-gray-700 mb-2 font-medium">
                 Buying Price (per Qty)
