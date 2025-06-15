@@ -176,7 +176,15 @@ export default function Dashboard() {
   const { roles = [], loading: loadingRoles } = useUserRoles();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-cyan-400 to-purple-400 flex flex-col">
+    <div
+      className="min-h-screen flex flex-col"
+      style={{
+        background:
+          "linear-gradient(120deg, #2563eb 0%, #3b82f6 35%, #14b8a6 70%, #a78bfa 100%)",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed",
+      }}
+    >
       <TopNav onLogout={() => navigate("/")} />
 
       <main className="max-w-6xl mx-auto py-10 px-6 flex-1 w-full">
