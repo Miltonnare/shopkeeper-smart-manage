@@ -1,4 +1,3 @@
-
 import TopNav from "@/components/TopNav";
 import { useUserRoles } from "@/hooks/useUserRoles";
 import { useAllUserRoles } from "@/hooks/useAllUserRoles";
@@ -96,24 +95,24 @@ export default function UserRoles() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-emerald-50 flex flex-col">
       <TopNav />
       <main className="max-w-4xl mx-auto px-4 py-12 flex flex-col items-center text-center flex-1 w-full">
-        <h1 className="text-4xl font-bold mb-4 text-accent drop-shadow">Admin Roles Management</h1>
-        <p className="text-lg text-muted-foreground mb-8">Manage user roles, status, and permissions below.</p>
+        <h1 className="text-4xl font-bold mb-2 text-accent drop-shadow">Admin Roles Management</h1>
+        <p className="text-lg text-muted-foreground mb-10 mt-2">Manage user roles, status, and permissions below.</p>
 
         {/* Admin-only: Profit/Loss Report */}
-        <div className="w-full">
+        <div className="w-full mb-10">
           <AdminProfitLossReport />
         </div>
 
-        <form onSubmit={handleAdd} className="mb-6 flex flex-col sm:flex-row gap-2 sm:gap-4 items-center">
+        <form onSubmit={handleAdd} className="mb-8 flex flex-col sm:flex-row gap-3 sm:gap-5 items-center bg-white/60 py-5 px-4 rounded-xl shadow">
           <input
-            className="border border-slate-300 rounded px-3 py-2 w-56"
+            className="border border-slate-300 rounded px-4 py-2 w-56"
             placeholder="User ID"
             value={addForm.user_id}
             onChange={e => setAddForm(f => ({ ...f, user_id: e.target.value }))}
             required
           />
           <select
-            className="border border-slate-300 rounded px-3 py-2"
+            className="border border-slate-300 rounded px-4 py-2"
             value={addForm.role}
             onChange={e => setAddForm(f => ({
               ...f,
@@ -124,11 +123,11 @@ export default function UserRoles() {
               <option key={role} value={role}>{role}</option>
             ))}
           </select>
-          <Button type="submit" disabled={adding}>
+          <Button type="submit" disabled={adding} className="mt-2 sm:mt-0">
             {adding ? "Adding..." : "Add User"}
           </Button>
         </form>
-        <div className="w-full overflow-x-auto">
+        <div className="w-full overflow-x-auto bg-white/60 rounded-lg shadow mb-4 py-4 px-2">
           <Table>
             <TableHeader>
               <TableRow>
@@ -168,7 +167,7 @@ export default function UserRoles() {
             </TableBody>
           </Table>
         </div>
-        <div className="mt-6 text-sm text-muted-foreground">
+        <div className="mt-8 text-sm text-muted-foreground py-2">
           <b>Note:</b> For demo, you must enter a User ID. Email/user search & mapping can be added if allowed.
         </div>
       </main>
