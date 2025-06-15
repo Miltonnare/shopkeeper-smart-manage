@@ -187,11 +187,13 @@ export default function Dashboard() {
     >
       <TopNav onLogout={() => navigate("/")} />
 
-      <main className="max-w-6xl mx-auto py-10 px-6 flex-1 w-full">
-        <h2 className="text-3xl font-bold mb-8 bg-modern-gradient bg-clip-text text-transparent drop-shadow">Dashboard Overview</h2>
+      <main className="max-w-6xl mx-auto py-6 px-2 sm:py-10 sm:px-6 flex-1 w-full">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 bg-modern-gradient bg-clip-text text-transparent drop-shadow text-center sm:text-left">
+          Dashboard Overview
+        </h2>
         {/* Show current user roles */}
         {!authLoading && user && (
-          <div className="mb-6 flex flex-wrap gap-2 items-center">
+          <div className="mb-4 sm:mb-6 flex flex-wrap gap-2 items-center justify-center sm:justify-start">
             <span className="text-base font-medium text-slate-600">Your roles:</span>
             {loadingRoles ? (
               <span className="text-slate-400 italic">Loading...</span>
@@ -209,18 +211,16 @@ export default function Dashboard() {
             )}
           </div>
         )}
-        {/* Show loading spinner while user/auth state is being determined */}
         {authLoading ? (
-          <div className="mb-8 flex items-center justify-center py-8">
+          <div className="mb-6 sm:mb-8 flex items-center justify-center py-4 sm:py-8">
             <span className="animate-spin rounded-full border-4 border-accent/20 border-t-accent mr-3 h-6 w-6 inline-block" />
             <span className="text-accent text-lg font-medium">Loading...</span>
           </div>
         ) : (
-          // If not logged in, show a banner prompting user to login/signup
           !user && (
-            <div className="mb-8 bg-yellow-100 text-yellow-900 p-4 rounded-lg border border-yellow-300 shadow flex flex-col md:flex-row md:items-center gap-4">
+            <div className="mb-6 sm:mb-8 bg-yellow-100 text-yellow-900 p-4 rounded-lg border border-yellow-300 shadow flex flex-col md:flex-row md:items-center gap-3">
               <span>Sign in to manage your shop, add products, and track your inventory and sales!</span>
-              <div className="flex gap-2">
+              <div className="flex gap-2 justify-end">
                 <Link to="/auth" className="px-4 py-2 rounded bg-primary text-white font-semibold hover:bg-primary/90 transition">
                   Login / Sign Up
                 </Link>
@@ -250,11 +250,12 @@ export default function Dashboard() {
           onCancel={() => setShowSaleForm(false)}
         />
 
-        <div className="flex flex-col md:flex-row gap-8">
+        {/* Wrap dashboard QuickActions and tips in mobile-friendly flex */}
+        <div className="flex flex-col md:flex-row gap-4 md:gap-8 mt-2">
           <DashboardQuickActions user={user} />
-          <div className="flex-1 flex flex-col">
-            <div className="glass-card light h-full rounded-2xl flex items-center justify-center border shadow-lg p-6">
-              <span className="text-lg text-dark-secondary italic">
+          <div className="flex-1 flex flex-col mt-4 md:mt-0">
+            <div className="glass-card light h-full rounded-2xl flex items-center justify-center border shadow-lg p-4 sm:p-6">
+              <span className="text-base sm:text-lg text-dark-secondary italic text-center">
                 “Stay smart! Monitor sales, stock, and trends here.”
               </span>
             </div>
