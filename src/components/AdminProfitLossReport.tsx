@@ -1,10 +1,18 @@
 
 import { useState } from "react";
-import { useAllUsersWithSales } from "@/hooks/useAllUsersWithSales";
+import { useAllUsers } from "@/hooks/useAllUsers";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell, TableCaption } from "@/components/ui/table";
 import { toast } from "@/components/ui/use-toast";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 type ProfitLoss = {
   totalSales: number;
@@ -13,12 +21,23 @@ type ProfitLoss = {
 };
 
 export default function AdminProfitLossReport() {
-  const { data: users, isLoading } = useAllUsersWithSales();
+  const { data: users, isLoading } = useAllUsers();
   const [selectedUser, setSelectedUser] = useState<string>("");
+  const [inputSearch, setInputSearch] = useState<string>("");
   const [from, setFrom] = useState<Date | null>(null);
   const [to, setTo] = useState<Date | null>(null);
   const [result, setResult] = useState<ProfitLoss | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Filtering users as admin types
+  const filteredUsers = users?.filter((u: any) => {
+    if (!inputSearch) return true;
+    const name = `${u.first_name ?? ""} ${u.last_name ?? ""}`.trim().toLowerCase();
+    return (
+      name.includes(inputSearch.toLowerCase()) ||
+      (u.id ?? "").toLowerCase().includes(inputSearch.toLowerCase())
+    );
+  });
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,22 +96,31 @@ export default function AdminProfitLossReport() {
   return (
     <div className="mb-8 glass-card border shadow-xl p-6 flex flex-col gap-3 items-start w-full">
       <h2 className="text-lg font-semibold mb-3 text-accent">Admin Profit / Loss Report</h2>
-      <form className="flex flex-wrap items-end gap-4 mb-2" onSubmit={handleGenerate}>
-        <div>
+      <form className="flex flex-wrap items-end gap-4 mb-2 w-full" onSubmit={handleGenerate}>
+        <div className="flex flex-col gap-1 min-w-[170px]">
           <label className="block mb-1 text-xs font-semibold">User</label>
-          <select
-            value={selectedUser}
-            onChange={e => setSelectedUser(e.target.value)}
-            className="px-3 py-2 border rounded min-w-[170px]"
-            required
-          >
-            <option value="">Select User</option>
-            {users?.map((u: any) => (
-              <option key={u.id} value={u.id}>
-                {u.name}
-              </option>
-            ))}
-          </select>
+          <Input
+            placeholder="Type to search users"
+            value={inputSearch}
+            onChange={e => setInputSearch(e.target.value)}
+            className="mb-2"
+          />
+          <Select value={selectedUser} onValueChange={setSelectedUser}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select User" />
+            </SelectTrigger>
+            <SelectContent className="max-h-52">
+              {filteredUsers && filteredUsers.length > 0 ? (
+                filteredUsers.map((u: any) => (
+                  <SelectItem key={u.id} value={u.id}>
+                    {`${u.first_name || ""} ${u.last_name || ""}`.trim() || u.id}
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem value="" disabled>No users found</SelectItem>
+              )}
+            </SelectContent>
+          </Select>
         </div>
         <div>
           <label className="block mb-1 text-xs font-semibold">From</label>
@@ -142,5 +170,3 @@ export default function AdminProfitLossReport() {
     </div>
   );
 }
-
-// ... end of file
