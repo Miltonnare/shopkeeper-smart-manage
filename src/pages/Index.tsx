@@ -31,7 +31,7 @@ export default function Index() {
           <Link to="/" className="hover:text-accent text-accent font-semibold transition">Home</Link>
           <Link to="/about" className="hover:text-accent text-accent font-semibold transition">About</Link>
           <Link to="/contact-us" className="hover:text-accent text-accent font-semibold transition">Contact Us</Link>
-          <Link to="/login" className="px-4 py-2 rounded-md bg-gradient-to-tr from-blue-700 to-purple-500 text-white font-semibold shadow-md hover:scale-105 focus:ring-2 ring-offset-2 ring-blue-700 transition">
+          <Link to="/auth" className="px-4 py-2 rounded-md bg-gradient-to-tr from-blue-700 to-purple-500 text-white font-semibold shadow-md hover:scale-105 focus:ring-2 ring-offset-2 ring-blue-700 transition">
             Login / Sign Up
           </Link>
         </div>
@@ -60,7 +60,7 @@ export default function Index() {
           Empowering shopkeepers with simple tools for Inventory, Sales &amp; Stock Management.
         </p>
         <Link
-          to="/login"
+          to="/auth"
           className="bg-gradient-to-tr from-blue-700 to-purple-500 text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:scale-105 transition mb-16"
         >
           Get Started

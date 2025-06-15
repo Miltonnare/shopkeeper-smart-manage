@@ -24,7 +24,7 @@ export default function ContactUs() {
           <Link to="/" className="hover:text-primary font-medium transition">Home</Link>
           <Link to="/about" className="hover:text-primary font-medium transition">About</Link>
           <Link to="/contact-us" className="hover:text-primary font-medium transition">Contact Us</Link>
-          <Link to="/login" className="px-4 py-2 rounded-md bg-gradient-to-tr from-blue-700 to-purple-500 text-white font-semibold shadow-md hover:scale-105 focus:ring-2 ring-offset-2 ring-blue-700 transition">Login / Sign Up</Link>
+          <Link to="/auth" className="px-4 py-2 rounded-md bg-gradient-to-tr from-blue-700 to-purple-500 text-white font-semibold shadow-md hover:scale-105 focus:ring-2 ring-offset-2 ring-blue-700 transition">Login / Sign Up</Link>
         </div>
       </nav>
       <main className="max-w-3xl mx-auto px-4 py-16 flex flex-col items-center text-center flex-1 w-full z-10 relative">
