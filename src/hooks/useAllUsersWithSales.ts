@@ -7,24 +7,28 @@ export function useAllUsersWithSales() {
   return useQuery({
     queryKey: ["users-with-sales"],
     queryFn: async () => {
-      // Find distinct user_ids in sales
+      // Find user_ids in sales
       const { data, error } = await supabase
         .from("sales")
         .select("user_id")
-        .neq("user_id", null)
-        .group("user_id");
+        .neq("user_id", null);
+
       if (error) throw new Error(error.message);
 
-      // Try to get their emails from profiles (if exists)
-      const userIds = data.map((u: { user_id: string }) => u.user_id);
-      if (userIds.length === 0) return [];
+      // Deduplicate user_ids
+      const uniqueUserIds = Array.from(
+        new Set((data ?? []).map((u: { user_id: string }) => u.user_id))
+      );
+
+      if (uniqueUserIds.length === 0) return [];
+
       // Load profiles
       const { data: profiles } = await supabase
         .from("profiles")
         .select("id, first_name, last_name")
-        .in("id", userIds);
+        .in("id", uniqueUserIds);
 
-      return userIds.map(id => {
+      return uniqueUserIds.map(id => {
         const profile = profiles?.find((p: any) => p.id === id);
         return {
           id,
