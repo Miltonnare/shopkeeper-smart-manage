@@ -3,6 +3,8 @@ import TopNav from "@/components/TopNav";
 import SalesTrendsChart from "@/components/SalesTrendsChart";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import AdminProfitLossReport from "@/components/AdminProfitLossReport";
+import { useUserRoles } from "@/hooks/useUserRoles";
 
 type Sale = {
   id: string;
@@ -16,6 +18,8 @@ type Sale = {
 export default function SalesReports() {
   const [sales, setSales] = useState<Sale[]>([]);
   const [loading, setLoading] = useState(true);
+  const { roles, loading: rolesLoading } = useUserRoles();
+  const isAdmin = roles?.includes("admin");
 
   useEffect(() => {
     async function fetchSales() {
@@ -49,9 +53,13 @@ export default function SalesReports() {
     <div className="min-h-screen bg-gradient-to-br from-[#e3edf9] via-[#c7f6ed] to-[#fafbfe]">
       <TopNav />
       <main className="max-w-4xl mx-auto px-4 py-10">
+
         <h2 className="text-2xl font-bold mb-6 bg-modern-gradient bg-clip-text text-transparent drop-shadow">
           Sales Reports &amp; Trends
         </h2>
+        {isAdmin && !rolesLoading && (
+          <AdminProfitLossReport />
+        )}
         <div className="mb-8 flex flex-col sm:flex-row gap-4">
           <div className="bg-white glass-card shadow text-lg px-6 py-4 rounded-lg border font-bold flex-1 flex flex-col items-center">
             <span className="text-sm text-dark-secondary mb-2">Total Sales</span>
@@ -117,3 +125,4 @@ export default function SalesReports() {
     </div>
   );
 }
+
