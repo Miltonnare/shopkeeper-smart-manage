@@ -28,8 +28,14 @@ export function useAllUsersWithSales() {
         .select("id, first_name, last_name")
         .in("id", uniqueUserIds);
 
+      type ProfileRow = {
+        id: string;
+        first_name: string | null;
+        last_name: string | null;
+      };
+
       return uniqueUserIds.map(id => {
-        const profile = profiles?.find((p: any) => p.id === id);
+        const profile = (profiles as ProfileRow[] | null)?.find((p) => p.id === id);
         return {
           id,
           name: profile

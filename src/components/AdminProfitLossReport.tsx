@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useAllUsers } from "@/hooks/useAllUsers";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -19,8 +19,27 @@ type ProfitLoss = {
   totalProfit: number;
 };
 
+interface UserProfile {
+  id: string;
+  first_name: string | null;
+  last_name: string | null;
+}
+
+interface SaleRecord {
+  quantity: number;
+  unit_price: number | null;
+  product_id: string;
+  total_amount: number;
+  created_at: string;
+}
+
+interface ProductRecord {
+  id: string;
+  buying_price: number;
+}
+
 export default function AdminProfitLossReport() {
-  const { data: users, isLoading } = useAllUsers();
+  const { data: users } = useAllUsers() as { data: UserProfile[] | undefined; isLoading: boolean };
   const [selectedUser, setSelectedUser] = useState<string>("");
   const [inputSearch, setInputSearch] = useState<string>("");
   const [from, setFrom] = useState<Date | null>(null);
@@ -29,7 +48,7 @@ export default function AdminProfitLossReport() {
   const [loading, setLoading] = useState(false);
 
   // Filtering users as admin types
-  const filteredUsers = users?.filter((u: any) => {
+  const filteredUsers = users?.filter((u: UserProfile) => {
     if (!inputSearch) return true;
     const name = `${u.first_name ?? ""} ${u.last_name ?? ""}`.trim().toLowerCase();
     return (
@@ -48,7 +67,7 @@ export default function AdminProfitLossReport() {
     setResult(null);
     try {
       // Fetch all sales for this user in range
-      const { data: sales, error } = await supabase
+      const { data: salesData, error } = await supabase
         .from("sales")
         .select("quantity, unit_price, product_id, total_amount, created_at")
         .eq("user_id", selectedUser)
@@ -56,21 +75,26 @@ export default function AdminProfitLossReport() {
         .lte("created_at", to.toISOString());
 
       if (error) throw error;
-      if (!sales || sales.length === 0) {
+
+      const sales = (salesData || []) as SaleRecord[];
+
+      if (sales.length === 0) {
         setResult({ totalSales: 0, totalCost: 0, totalProfit: 0 });
         setLoading(false);
         return;
       }
       // Fetch product info for buying prices
       const uniqueProductIds = [
-        ...new Set(sales.map((s: any) => s.product_id)),
+        ...new Set(sales.map((s) => s.product_id)),
       ];
-      const { data: products, error: prodError } = await supabase
+      const { data: productsData, error: prodError } = await supabase
         .from("products")
         .select("id, buying_price")
         .in("id", uniqueProductIds);
 
       if (prodError) throw prodError;
+
+      const products = (productsData || []) as ProductRecord[];
 
       // Calculate
       let totalSales = 0;
@@ -80,14 +104,15 @@ export default function AdminProfitLossReport() {
         const qty = Number(sale.quantity) || 0;
         const amount = Number(sale.total_amount) || 0;
         totalSales += amount;
-        const product = products.find((p: any) => p.id === sale.product_id);
+        const product = products.find((p) => p.id === sale.product_id);
         const buyingPrice = product ? Number(product.buying_price) : 0;
         totalCost += buyingPrice * qty;
       }
       const totalProfit = totalSales - totalCost;
       setResult({ totalSales, totalCost, totalProfit });
-    } catch (err: any) {
-      toast({ title: "Error", description: String(err?.message) });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast({ title: "Error", description: msg });
     }
     setLoading(false);
   };
@@ -110,7 +135,7 @@ export default function AdminProfitLossReport() {
             </SelectTrigger>
             <SelectContent className="max-h-52">
               {filteredUsers && filteredUsers.length > 0 &&
-                filteredUsers.map((u: any) => (
+                filteredUsers.map((u) => (
                   <SelectItem key={u.id} value={u.id}>
                     {`${u.first_name || ""} ${u.last_name || ""}`.trim() || u.id}
                   </SelectItem>

@@ -3,8 +3,6 @@ import TopNav from "@/components/TopNav";
 import SalesTrendsChart from "@/components/SalesTrendsChart";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import AdminProfitLossReport from "@/components/AdminProfitLossReport";
-import { useUserRoles } from "@/hooks/useUserRoles";
 
 type Sale = {
   id: string;
@@ -18,8 +16,6 @@ type Sale = {
 export default function SalesReports() {
   const [sales, setSales] = useState<Sale[]>([]);
   const [loading, setLoading] = useState(true);
-  const { roles, loading: rolesLoading } = useUserRoles();
-  const isAdmin = roles?.includes("admin");
 
   useEffect(() => {
     async function fetchSales() {

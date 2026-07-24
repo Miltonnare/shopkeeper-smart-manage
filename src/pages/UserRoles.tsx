@@ -70,8 +70,9 @@ export default function UserRoles() {
       toast({ title: "Role Added", description: "Successfully added role." });
       setAddForm({ user_id: "", role: "manager" });
       refetch();
-    } catch (err: any) {
-      toast({ title: "Error", description: String(err?.message) });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast({ title: "Error", description: msg });
     } finally {
       setAdding(false);
     }

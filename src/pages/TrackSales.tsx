@@ -1,10 +1,17 @@
-
 import TopNav from "@/components/TopNav";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+interface Product {
+  id: string;
+  name: string;
+  stock: number;
+  selling_price: number;
+  created_at: string | null;
+}
+
 export default function TrackSales() {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,7 +31,7 @@ export default function TrackSales() {
       if (error) {
         setProducts([]);
       } else {
-        setProducts(data || []);
+        setProducts((data || []) as Product[]);
       }
       setLoading(false);
     }
@@ -79,7 +86,7 @@ export default function TrackSales() {
                     </td>
                   </tr>
                 )}
-                {products.map((product: any) => (
+                {products.map((product) => (
                   <tr key={product.id} className="hover:bg-accent/10 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap font-semibold text-dark-main">{product.name}</td>
                     <td className="px-6 py-4 text-dark-main">{product.stock}</td>

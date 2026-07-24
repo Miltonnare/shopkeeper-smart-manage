@@ -1,6 +1,6 @@
 
 import { ChartContainer } from "@/components/ui/chart";
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { AreaChart, Area, XAxis, YAxis, Tooltip } from "recharts";
 
 // types: sales must at least have created_at and total_amount
 type Sale = {

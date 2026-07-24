@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { LogOut, ShoppingCart, BarChart2, Archive, Plus, User, Navigation, Menu } from "lucide-react";
+import { LogOut, ShoppingCart, BarChart2, Plus, User, Navigation, Menu } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserRoles } from "@/hooks/useUserRoles";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
