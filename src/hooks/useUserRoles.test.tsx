@@ -1,10 +1,10 @@
 import { describe, it, expect, vi } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { useUserRoles } from "./useUserRoles";
-import { useAuth } from "@/components/auth/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 // Mock the AuthContext hook
-vi.mock("@/components/auth/AuthContext", () => ({
+vi.mock("@/contexts/AuthContext", () => ({
   useAuth: vi.fn(),
 }));
 

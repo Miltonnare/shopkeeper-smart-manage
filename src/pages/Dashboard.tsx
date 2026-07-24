@@ -1,4 +1,4 @@
-import TopNav from "@/components/TopNav";
+import TopNav from "@/components/layout/TopNav";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import DashboardStats from "@/components/dashboard/DashboardStats";
 import RecordSaleModal from "@/components/dashboard/RecordSaleModal";
 import DashboardQuickActions from "@/components/dashboard/DashboardQuickActions";
-import { useAuth } from "@/components/auth/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Product {
   id: string;

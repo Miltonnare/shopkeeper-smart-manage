@@ -15,7 +15,7 @@ import Login from "./pages/Login";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import UserRoles from "./pages/UserRoles";
-import { AuthProvider, useAuth } from "@/components/auth/AuthContext";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 
 const queryClient = new QueryClient();
 

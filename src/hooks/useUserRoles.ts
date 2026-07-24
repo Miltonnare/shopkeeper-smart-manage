@@ -1,4 +1,4 @@
-import { useAuth, AppRole } from "@/components/auth/AuthContext";
+import { useAuth, AppRole } from "@/contexts/AuthContext";
 
 export type { AppRole };
 
