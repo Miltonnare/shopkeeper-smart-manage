@@ -1,9 +1,8 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
@@ -16,93 +15,91 @@ import Login from "./pages/Login";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import UserRoles from "./pages/UserRoles";
-// Removed: import Admin from "./pages/Admin";
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { AuthProvider, useAuth } from "@/components/auth/AuthContext";
 
 const queryClient = new QueryClient();
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
-  const [loading, setLoading] = useState(true);
-  const [session, setSession] = useState<any>(null);
+  const { user, loading } = useAuth();
 
-  useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setLoading(false);
-    });
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setLoading(false);
-    });
-    return () => listener?.subscription.unsubscribe();
-  }, []);
-
-  if (loading) return <div className="flex justify-center items-center min-h-screen text-lg">Loading...</div>;
-  if (!session) {
-    window.location.replace("/auth");
-    return null;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen text-lg">
+        <span className="animate-spin rounded-full border-4 border-primary/20 border-t-primary mr-3 h-8 w-8" />
+        Loading...
+      </div>
+    );
   }
+
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
+
   return children;
 }
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/auth" element={<Auth />} />
-          {/* Dashboard is now PUBLIC */}
-          <Route path="/dashboard" element={<Dashboard />} />
-          {/* Admin-only User Roles Page */}
-          <Route
-            path="/user-roles"
-            element={<UserRoles />}
-          />
-          {/* Protected routes */}
-          <Route
-            path="/track-sales"
-            element={
-              <ProtectedRoute>
-                <TrackSales />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/sales-reports"
-            element={
-              <ProtectedRoute>
-                <SalesReports />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/add-product"
-            element={
-              <ProtectedRoute>
-                <AddProduct />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/auth" element={<Auth />} />
+            {/* Dashboard is public but displays prompt if not logged in */}
+            <Route path="/dashboard" element={<Dashboard />} />
+            {/* Admin-only User Roles Page (protected inside component) */}
+            <Route
+              path="/user-roles"
+              element={
+                <ProtectedRoute>
+                  <UserRoles />
+                </ProtectedRoute>
+              }
+            />
+            {/* Protected routes */}
+            <Route
+              path="/track-sales"
+              element={
+                <ProtectedRoute>
+                  <TrackSales />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/sales-reports"
+              element={
+                <ProtectedRoute>
+                  <SalesReports />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/add-product"
+              element={
+                <ProtectedRoute>
+                  <AddProduct />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

@@ -1,6 +1,5 @@
 import TopNav from "@/components/TopNav";
 import { useNavigate } from "react-router-dom";
-import { BarChart2, Archive, ShoppingCart, Plus as PlusIcon, Minus as MinusIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
@@ -8,13 +7,22 @@ import { useToast } from "@/hooks/use-toast";
 import DashboardStats from "@/components/dashboard/DashboardStats";
 import RecordSaleModal from "@/components/dashboard/RecordSaleModal";
 import DashboardQuickActions from "@/components/dashboard/DashboardQuickActions";
-import { useUserRoles } from "@/hooks/useUserRoles";
+import { useAuth } from "@/components/auth/AuthContext";
 
-const initialTotalSales = 42950; // Initial sales value
+interface Product {
+  id: string;
+  name: string;
+  stock: number;
+  selling_price: number;
+  buying_price: number;
+  user_id: string;
+  created_at: string | null;
+}
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, roles, loading: authLoading } = useAuth();
 
   // State for sales
   const [totalSales, setTotalSales] = useState(0);
@@ -22,39 +30,14 @@ export default function Dashboard() {
 
   // For prompt/modal (quick "sell" UI)
   const [showSaleForm, setShowSaleForm] = useState(false);
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [selectedProductId, setSelectedProductId] = useState("");
   const [saleQty, setSaleQty] = useState(1);
   const [isRecordingSale, setIsRecordingSale] = useState(false);
 
-  // Auth and loading states
-  const [user, setUser] = useState<any | null>(null);
-  const [authLoading, setAuthLoading] = useState(true);
-
   // States for inventory stats
   const [inventoryCount, setInventoryCount] = useState<number | null>(null);
   const [lowStockCount, setLowStockCount] = useState<number | null>(null);
-
-  // Load auth and user state
-  useEffect(() => {
-    let unsubscribed = false;
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!unsubscribed) {
-        setUser(user);
-        setAuthLoading(false);
-      }
-    });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!unsubscribed) {
-        setUser(session?.user ?? null);
-        setAuthLoading(false);
-      }
-    });
-    return () => {
-      unsubscribed = true;
-      listener.subscription.unsubscribe();
-    };
-  }, []);
 
   // Fetch dashboard stats from Supabase
   useEffect(() => {
@@ -79,7 +62,7 @@ export default function Dashboard() {
         return;
       }
       const sum = (data || []).reduce(
-        (acc: number, s: any) => acc + Number(s.total_amount || 0),
+        (acc: number, s: { total_amount: number }) => acc + Number(s.total_amount || 0),
         0
       );
       setTotalSales(sum);
@@ -93,27 +76,23 @@ export default function Dashboard() {
         .select("*")
         .eq("user_id", user.id);
 
-      setProducts(productsData || []);
-      setInventoryCount(productsData ? productsData.length : 0);
-      setLowStockCount(productsData ? productsData.filter((p) => typeof p.stock === "number" && p.stock <= 10).length : 0);
+      if (error) {
+        console.error("Error fetching products:", error.message);
+        setProducts([]);
+        setInventoryCount(0);
+        setLowStockCount(0);
+        return;
+      }
+
+      const typedProducts = (productsData || []) as Product[];
+      setProducts(typedProducts);
+      setInventoryCount(typedProducts.length);
+      setLowStockCount(typedProducts.filter((p) => typeof p.stock === "number" && p.stock <= 10).length);
     };
 
     fetchTotalSales();
     fetchProducts();
   }, [user, isRecordingSale]);
-
-  // Handlers for sales
-  const handleIncrement = () => {
-    if (user) setShowSaleForm(true);
-  };
-
-  const handleDecrement = () => {
-    // For demo simplicity: just toast
-    toast({
-      description: "Decrementing total sales is not supported for data integrity.",
-      variant: "destructive"
-    });
-  };
 
   const handleRecordSale = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -170,10 +149,7 @@ export default function Dashboard() {
     setSelectedProductId("");
     setSaleQty(1);
     setIsRecordingSale(false);
-    // Stats will be refreshed due to isRecordingSale dependency
   };
-
-  const { roles = [], loading: loadingRoles } = useUserRoles();
 
   return (
     <div
@@ -195,9 +171,7 @@ export default function Dashboard() {
         {!authLoading && user && (
           <div className="mb-4 sm:mb-6 flex flex-wrap gap-2 items-center justify-center sm:justify-start">
             <span className="text-base font-medium text-slate-600">Your roles:</span>
-            {loadingRoles ? (
-              <span className="text-slate-400 italic">Loading...</span>
-            ) : roles.length === 0 ? (
+            {roles.length === 0 ? (
               <span className="text-slate-400 italic">No roles assigned.</span>
             ) : (
               roles.map((role) => (

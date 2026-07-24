@@ -1,8 +1,9 @@
 
 import { useNavigate } from "react-router-dom";
 import { Plus as PlusIcon, BarChart2 } from "lucide-react";
+import type { User } from "@supabase/supabase-js";
 
-export default function DashboardQuickActions({ user }: { user: any }) {
+export default function DashboardQuickActions({ user }: { user: User | null }) {
   const navigate = useNavigate();
   return (
     <div className="flex-1 glass-card light p-6 mb-6 md:mb-0 border shadow-lg">

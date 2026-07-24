@@ -1,11 +1,12 @@
 
 import { BarChart2, Archive, ShoppingCart, Plus as PlusIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { User } from "@supabase/supabase-js";
 
 interface StatProps {
   totalSales: number;
   loadingTotalSales: boolean;
-  user: any;
+  user: User | null;
   inventoryCount: number | null;
   lowStockCount: number | null;
   onRecordSale: () => void;
