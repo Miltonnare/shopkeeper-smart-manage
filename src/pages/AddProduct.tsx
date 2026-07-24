@@ -1,5 +1,5 @@
 
-import TopNav from "@/components/TopNav";
+import TopNav from "@/components/layout/TopNav";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";

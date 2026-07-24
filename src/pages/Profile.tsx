@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import TopNav from "@/components/TopNav";
+import TopNav from "@/components/layout/TopNav";
 import { toast } from "@/hooks/use-toast";
 
 export default function Profile() {

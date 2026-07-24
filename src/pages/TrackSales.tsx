@@ -1,4 +1,4 @@
-import TopNav from "@/components/TopNav";
+import TopNav from "@/components/layout/TopNav";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 

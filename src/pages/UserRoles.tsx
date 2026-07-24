@@ -1,5 +1,5 @@
 
-import TopNav from "@/components/TopNav";
+import TopNav from "@/components/layout/TopNav";
 import { useUserRoles } from "@/hooks/useUserRoles";
 import { useAllUserRoles } from "@/hooks/useAllUserRoles";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
-import AdminProfitLossReport from "@/components/AdminProfitLossReport";
+import AdminProfitLossReport from "@/components/reports/AdminProfitLossReport";
 
 // Enum for allowed role values
 const ROLE_VALUES = ["admin", "manager", "sales", "inventory", "viewer"] as const;

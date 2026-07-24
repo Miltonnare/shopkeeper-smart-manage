@@ -1,6 +1,6 @@
 
-import TopNav from "@/components/TopNav";
-import SalesTrendsChart from "@/components/SalesTrendsChart";
+import TopNav from "@/components/layout/TopNav";
+import SalesTrendsChart from "@/components/charts/SalesTrendsChart";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
