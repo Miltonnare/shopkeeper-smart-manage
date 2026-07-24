@@ -1,5 +1,13 @@
-
 import React from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface Product {
   id: string;
@@ -31,52 +39,72 @@ export default function RecordSaleModal({
   onSubmit,
   onCancel,
 }: RecordSaleModalProps) {
-  if (!show) return null;
+  const selectedProduct = products.find((p) => p.id === selectedProductId);
+  const maxQty = selectedProduct ? selectedProduct.stock : 1;
+
   return (
-    <form
-      onSubmit={onSubmit}
-      className="fixed z-40 left-0 top-0 w-full h-full flex items-center justify-center bg-black/30 backdrop-blur"
-      style={{ alignItems: "flex-start", paddingTop: "12vh" }}
-    >
-      <div className="bg-white rounded-2xl shadow-2xl p-8 w-96 border">
-        <div className="mb-4 font-bold text-accent text-lg">Record a Sale</div>
-        <div className="mb-3">
-          <label className="block mb-1 font-medium text-sm">Product</label>
-          <select
-            className="w-full px-2 py-2 border rounded"
-            value={selectedProductId}
-            onChange={e => onChangeProduct(e.target.value)}
-            required
-          >
-            <option value="" disabled>Select product</option>
-            {products.map((p) =>
-              <option key={p.id} value={p.id}>{p.name} (Stock: {p.stock})</option>
-            )}
-          </select>
-        </div>
-        <div className="mb-6">
-          <label className="block mb-1 font-medium text-sm">Quantity</label>
-          <input
-            className="w-full px-2 py-2 border rounded"
-            type="number"
-            min={1}
-            max={selectedProductId ? (products.find((p) => p.id === selectedProductId)?.stock || 1) : 1}
-            value={saleQty}
-            onChange={e => onChangeQty(Number(e.target.value))}
-            required
-          />
-        </div>
-        <div className="flex gap-2">
-          <button
-            type="submit"
-            className="flex-1 bg-primary text-white rounded py-2 font-semibold hover:bg-primary/90 transition"
-            disabled={isRecordingSale}
-          >
-            {isRecordingSale ? "Saving..." : "Record Sale"}
-          </button>
-          <button type="button" className="flex-1 bg-gray-200 rounded py-2 font-semibold" onClick={onCancel}>Cancel</button>
-        </div>
-      </div>
-    </form>
+    <Dialog open={show} onOpenChange={(open) => { if (!open) onCancel(); }}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle className="text-accent text-lg">Record a Sale</DialogTitle>
+          <DialogDescription>
+            Select a product and quantity to record a new sale in the system.
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <label htmlFor="product-select" className="block text-sm font-medium text-slate-700">
+              Product
+            </label>
+            <select
+              id="product-select"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white text-dark-main"
+              value={selectedProductId}
+              onChange={(e) => onChangeProduct(e.target.value)}
+              required
+            >
+              <option value="" disabled>Select product</option>
+              {products.map((p) => (
+                <option key={p.id} value={p.id} className="text-dark-main">
+                  {p.name} (Stock: {p.stock})
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="quantity-input" className="block text-sm font-medium text-slate-700">
+              Quantity
+            </label>
+            <input
+              id="quantity-input"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white text-dark-main"
+              type="number"
+              min={1}
+              max={maxQty}
+              value={saleQty}
+              onChange={(e) => onChangeQty(Number(e.target.value))}
+              required
+            />
+          </div>
+          <DialogFooter className="flex gap-2 pt-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onCancel}
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={isRecordingSale || !selectedProductId || saleQty <= 0}
+              className="flex-1"
+            >
+              {isRecordingSale ? "Saving..." : "Record Sale"}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }
