@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - VITE_SUPABASE_URL=https://lxdchlxdcuacvcdjtpwn.supabase.co
+        - VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4ZGNobHhkY3VhY3ZjZGp0cHduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5MDQxMDksImV4cCI6MjA2NTQ4MDEwOX0.wptuKUIsbd_vs-bJpZ22Ls644gyMTnEF6QFdKQGU5nM
+    ports:
+      - "80:80"
+    restart: always
